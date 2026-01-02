@@ -2,7 +2,9 @@
 
 ## 2026
 
-### 2026-01-02
+### 202601
+
+#### 20260102
 
 - [240. Search a 2D Matrix II](https://leetcode.cn/problems/search-a-2d-matrix-ii/)
 
