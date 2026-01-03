@@ -22,3 +22,22 @@
                   i+=1 # down increase
           return False
   ```
+
+### 20260103
+
+- [24. Swap Nodes in Pairs](https://leetcode.cn/problems/swap-nodes-in-pairs/)
+
+  ```python
+  class Solution:
+      def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+          # end
+          if not head or not head.next:
+              return head
+          nex=head.next
+          head.next=self.swapPairs(nex.next)
+          nex.next=head
+          return nex
+  ```
+
+  
+
