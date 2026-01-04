@@ -30,7 +30,7 @@
   ```python
   class Solution:
       def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
-          # end
+          # end case
           if not head or not head.next:
               return head
           nex=head.next
@@ -39,5 +39,25 @@
           return nex
   ```
 
-  
 
+### 20260104
+
+- [41. First Missing Positive](https://leetcode.cn/problems/first-missing-positive/)
+
+  ```python
+  class Solution:
+      def firstMissingPositive(self, nums: List[int]) -> int:
+          # sort
+          # check
+          nums.sort()
+          ans=0
+          for i in range(len(nums)):
+              if nums[i]>0:
+                  if nums[i]==ans+1:
+                      ans+=1
+                  elif nums[i]>ans+1:
+                      return ans+1
+          return ans+1
+  ```
+
+  
