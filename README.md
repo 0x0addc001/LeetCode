@@ -60,4 +60,37 @@
           return ans+1
   ```
 
+### 20260105
+
+- [437. Path Sum III](https://leetcode.cn/problems/path-sum-iii/)
+
+  ```python
+  # dfs O(n^2)
+  class Solution:
+      def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+          # downward path -> dfs -> recur
+          if not root:
+              return 0
+          ctr=0
+          # start from root to somewhere
+          ctr+=self.rootSum(root,targetSum)
+          ctr+=self.pathSum(root.left,targetSum)
+          ctr+=self.pathSum(root.right,targetSum)
+          return ctr
+  
+      def rootSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+          if not root:
+              return 0
+          ctr=0
+          if root.val==targetSum:
+              ctr+=1
+          ctr+=self.rootSum(root.left,targetSum-root.val)
+          ctr+=self.rootSum(root.right,targetSum-root.val)
+          return ctr
+  ```
+
+  ```python
+  # 前缀和 O(n)
+  ```
+
   
