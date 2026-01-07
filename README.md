@@ -89,8 +89,41 @@
           return ctr
   ```
 
+### 20260107
+
+- [437. Path Sum III](https://leetcode.cn/problems/path-sum-iii/)
+
   ```python
   # 前缀和 O(n)
+  class Solution:
+      def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+          # prefixsum
+          prefixdict=collections.defaultdict(int)
+          
+          # tot or diff == tarsum
+          def dfs(node, legacy):
+              if not node:
+                  return 0
+              res=0
+              cur=legacy+node.val
+              # add self res
+              # 1. tot
+              if cur==targetSum:
+                  res+=1
+              # 2. diff
+              # root -> ...... -> node == cur
+              # x -> ... -> node == tarsum
+              # root -> ... -> pre_x == cur-tarsum
+              res+=prefixdict[cur-targetSum]
+  
+              # add left res and right res
+              prefixdict[cur]+=1
+              res+=dfs(node.left, cur)
+              res+=dfs(node.right, cur)
+              prefixdict[cur]-=1 # +1-1 exclusive prefix to this branch
+              return res
+  
+          return dfs(root, 0)
   ```
-
+  
   
