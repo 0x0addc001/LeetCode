@@ -126,4 +126,41 @@
           return dfs(root, 0)
   ```
   
-  
+
+### 20260108
+
+- [994. Rotting Oranges](https://leetcode.cn/problems/rotting-oranges/)
+
+  ```python
+  class Solution:
+      def orangesRotting(self, grid: List[List[int]]) -> int:
+          # enque
+          # bfs
+          # check 
+          if not grid:
+              return 0
+          m=len(grid)
+          n=len(grid[0])
+          ctr=0
+          que=deque()
+          for i in range(m):
+              for j in range(n):
+                  if grid[i][j]==1:
+                      ctr+=1
+                  if grid[i][j]==2:
+                      que.append((i,j,0))
+          if ctr==0:
+              return 0
+          minutes=0
+          while que:
+              x,y,minutes=que.popleft()
+              for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)]:
+                  if 0<=x+dx<m and 0<=y+dy<n and grid[x+dx][y+dy]==1:
+                      grid[x+dx][y+dy]=2
+                      que.append((x+dx,y+dy,minutes+1))
+                      ctr-=1
+          if ctr==0:
+              return minutes
+          else:
+              return -1
+  ```
