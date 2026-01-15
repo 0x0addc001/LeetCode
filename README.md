@@ -164,3 +164,33 @@
           else:
               return -1
   ```
+
+### 20260115
+
+- [78. Subsets](https://leetcode.cn/problems/subsets/)
+
+  ```python
+  # Bit
+  class Solution:
+      def subsets(self, nums: List[int]) -> List[List[int]]:
+          ans=[]
+          n=len(nums)
+          for i in range(2**n):
+              res=[]
+              b=bin(i)[2:].zfill(n)
+              for j in range(n):
+                  if b[j]=='1':
+                      res.append(nums[j])
+              ans.append(res)
+          return ans
+  ```
+
+### 20260116
+
+- [78. Subsets](https://leetcode.cn/problems/subsets/)
+
+  ```python
+  # Backtracking
+  ```
+
+  
