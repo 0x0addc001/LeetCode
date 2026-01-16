@@ -94,7 +94,7 @@
 - [437. Path Sum III](https://leetcode.cn/problems/path-sum-iii/)
 
   ```python
-  # 前缀和 O(n)
+  # PrefixSum 前缀和 O(n)
   class Solution:
       def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
           # prefixsum
@@ -170,7 +170,7 @@
 - [78. Subsets](https://leetcode.cn/problems/subsets/)
 
   ```python
-  # Bit
+  # Bit 二进制
   class Solution:
       def subsets(self, nums: List[int]) -> List[List[int]]:
           ans=[]
@@ -190,7 +190,25 @@
 - [78. Subsets](https://leetcode.cn/problems/subsets/)
 
   ```python
-  # Backtracking
+  # Backtracking 回溯
+  class Solution:
+      def subsets(self, nums: List[int]) -> List[List[int]]:
+          ans=[[]]
+          # 1,2,3
+          # longest paths: 1->2->3, 2->3, 3
+          # always look forward so that there's not repetition
+          def dfs(root,unseens):
+              if not unseens:
+                  return
+              for i,unseen in enumerate(unseens):
+                  if root:
+                      node=root+[unseen]
+                  else:
+                      node=[unseen]
+                  ans.append(node)
+                  dfs(node,unseens[i+1:])
+          dfs([],nums)
+          return ans
   ```
-
+  
   
