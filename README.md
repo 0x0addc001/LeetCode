@@ -211,4 +211,69 @@
           return ans
   ```
   
+
+### 20260116
+
+- [131. Palindrome Partitioning](https://leetcode.cn/problems/palindrome-partitioning/)
+
+  ```python
+  # Backtracking 回溯
+  class Solution:
+      def partition(self, s: str) -> List[List[str]]:
+          # a a b
+          # aab
+          if not s:
+              return []
+          res=[]
+          def is_palindrome(st):
+              return st==st[::-1]
+          def dfs(start,history):
+              if start==len(s): # end
+                  res.append(history[:]) # [:] for deep copy!!!
+                  return
+              for end in range(start+1,len(s)+1):
+                  if is_palindrome(s[start:end]):
+                      history.append(s[start:end])
+                      dfs(end,history)
+                      history.pop()
+          dfs(0,[])
+          return res
+  ```
+
+  ```python
+  # Backtracking 回溯 + DP Optimization
+  class Solution:
+      def partition(self, s: str) -> List[List[str]]:
+          # a a b
+          # aab
+          if not s:
+              return []
+          res=[]
+          # def is_palindrome(st):
+          #     return st==st[::-1]
+          is_palindrome=[[False] * len(s) for _ in range(len(s))]
+          for i in range(len(s)): # 1
+              is_palindrome[i][i]=True
+          for i in range(len(s)-1): # 2
+              # is_palindrome[i][i+1]=(s[i:i+2]==s[i+1:i-1:-1]
+              is_palindrome[i][i+1]=(s[i]==s[i+1])
+          for length in range(3,len(s)+1): # >2
+              for i in range(len(s)-length+1):
+                  # is_palindrome[i][i+length-1]=(s[i:i+length]==s[i+length-1:i-1:-1]
+                  is_palindrome[i][i+length-1]=(s[i]==s[i+length-1]) and is_palindrome[i+1][i+length-1-1]
+  
+          def dfs(start,history):
+              if start==len(s): # end
+                  res.append(history[:]) # [:] for deep copy!!!
+                  return
+              for end in range(start,len(s)):
+                  # if is_palindrome(s[start:end]):
+                  if is_palindrome[start][end]:
+                      history.append(s[start:end+1])
+                      dfs(end+1,history)
+                      history.pop()
+          dfs(0,[])
+          return res
+  ```
+
   
