@@ -212,7 +212,7 @@
   ```
   
 
-### 20260116
+### 20260125
 
 - [131. Palindrome Partitioning](https://leetcode.cn/problems/palindrome-partitioning/)
 
@@ -273,6 +273,51 @@
                       dfs(end+1,history)
                       history.pop()
           dfs(0,[])
+          return res
+  ```
+
+
+### 20260126
+
+- [51. N-Queens](https://leetcode.cn/problems/n-queens/)
+
+  ```python
+  # Backtracking 回溯
+  class Solution:
+      def solveNQueens(self, n: int) -> List[List[str]]:
+          res=[]
+          def is_safe(line,i,q_list):
+              # ..Q..
+              # .xxx.
+              # x.x.x
+              for q_ln,q_col in q_list:
+                  if i==q_col:
+                      return False
+                  # \
+                  # i+line-q_col
+                  right=q_col+line-q_ln
+                  if i==right:
+                      return False
+                  # /
+                  # i-line+q_col
+                  left=q_col-line+q_ln
+                  if i==left:
+                      return False
+              return True
+  
+          def dfs(line,history,q_list):
+              if line==n:
+                  res.append(history[:])
+                  return
+              for i in range(n):
+                  if is_safe(line,i,q_list):
+                      record='.'*i+'Q'+'.'*(n-i-1)
+                      history.append(record)
+                      q_list.append((line,i))
+                      dfs(line+1,history,q_list)
+                      history.pop()
+                      q_list.pop()
+          dfs(0,[],[])
           return res
   ```
 
