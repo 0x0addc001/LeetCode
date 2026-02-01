@@ -321,4 +321,36 @@
           return res
   ```
 
+
+### 20260201
+
+- [347. Top K Frequent Elements](https://leetcode.cn/problems/top-k-frequent-elements/)
+
+  ```python
+  # heapq.nlargest 堆
+  class Solution:
+      def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+          freq_dict=defaultdict(int)
+          for i in nums:
+              freq_dict[i]+=1
+          freq_list=[]
+          for key,val in freq_dict.items():
+              freq_list.append((key,val))
+          # freq_list=sorted(freq_list,key=lambda x:x[1],reverse=True)
+          # res=[]
+          # for i in range(k):
+          #     res.append(freq_list[i][0])
+          res=[key for key,val in heapq.nlargest(k,freq_list,key=lambda x:x[1])]
+          return res
+  ```
+
+  ```python
+  # Counter
+  class Solution:
+      def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+          freq=Counter(nums)
+          # return [key for key,val in heapq.nlargest(k,freq.items(),key=lambda x:x[1])]
+          return [key for key,val in freq.most_common(k)]
+  ```
+
   
