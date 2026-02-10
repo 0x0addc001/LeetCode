@@ -353,4 +353,40 @@
           return [key for key,val in freq.most_common(k)]
   ```
 
+
+### 20260210
+
+- [279. Perfect Squares](https://leetcode.cn/problems/perfect-squares/)
+
+  ```python
+  # dp
+  class Solution:
+      def numSquares(self, n: int) -> int:
+          # with all the subs plusing sq
+          # accept the small
+  
+          # init
+          dp=[float('inf') for _ in range(n+1)]
+          dp[0]=0
+          # prep
+          sqlist=[i**2 for i in range(int(n**0.5)+1)] # +1
+          # calc
+          for i in range(1,n+1):
+              
+              # for j in range(n): # from 0
+              #     for k in range(1,i-j):
+              #         if k**2==i-j: # just eq
+              #             dp[i]=min(dp[i],1+dp[j])
+  
+              # for k in range(1,int(i**0.5)+1):
+              #     dp[i]=min(dp[i],1+dp[i-k**2])
+  
+              for sq in sqlist:
+                  if sq>i:
+                      break
+                  dp[i]=min(dp[i],1+dp[i-sq])
+  
+          return dp[n]
+  ```
+
   
