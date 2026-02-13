@@ -431,4 +431,33 @@
           return pre[n]
   ```
 
+
+### 202602113
+
+- [394. Decode String](https://leetcode.cn/problems/decode-string/)
+
+  ```python
+  class Solution:
+      def decodeString(self, s: str) -> str:
+          # [
+          # ]
+          n=len(s)
+          digits_new=0
+          letters_new=''
+          stack=[]
+          for c in s:
+              if c.isdigit(): # 数字
+                  digits_new=digits_new*10+int(c)
+              elif c=='[': # 过去压栈
+                  stack.append((letters_new,digits_new))
+                  letters_new=''
+                  digits_new=0
+              elif c==']': # 当前清算
+                  letters_old,digits_old=stack.pop()
+                  letters_new=letters_old+(letters_new*digits_old)
+              else: # 字母
+                  letters_new+=c
+          return letters_new
+  ```
+
   
