@@ -460,4 +460,34 @@
           return letters_new
   ```
 
+
+### 202602113
+
+- [739. Daily Temperatures](https://leetcode.cn/problems/daily-temperatures/)
+
+  ```python
+  class Solution:
+      def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+          n=len(temperatures)
+          res=[0 for _ in range(n)]
+          # bf
+          # --->
+          # for i in range(n):
+          #     for j in range(i,n):
+          #         if temperatures[j]>temperatures[i]:
+          #             res[i]=j-i
+          #             break
+  
+          # mono stack / monotonic stack
+          # if we look all the way back from the future, then we don't need to wait for each future
+          unsolved_stk=[]
+          for i in range(n):
+              # warmer day arrives then roll back all the cooler prev days
+              while unsolved_stk and temperatures[i]>temperatures[unsolved_stk[-1]]:
+                  prev=unsolved_stk.pop()
+                  res[prev]=i-prev
+              unsolved_stk.append(i)
+          return res
+  ```
+
   
