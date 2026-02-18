@@ -490,4 +490,87 @@
           return res
   ```
 
+
+### 202602113
+
+- [739. Daily Temperatures](https://leetcode.cn/problems/daily-temperatures/)
+
+  ```python
+  class Solution:
+      def largestRectangleArea(self, heights: List[int]) -> int:
+          # bf
+          # n=len(heights)
+          # res=[0 for _ in range(n)]
+          # for i in range(n):
+          #     lowest=float('inf')
+          #     for j in range(i,-1,-1):
+          #         lowest=min(lowest,heights[j])
+          #         res[i]=max(res[i],lowest*(i-j+1))
+          # return max(res)
+  
+          # mono stack
+          # could we save a cache for each position which means the value of it and its past, so that we don't need to recompute it again?
+          # it is particularly important when it comes to the bottleneck like '1', why? because it tightly control the previous information (even such kind of number is in the middle is still needed for reconsideration), thus it can suggest us whether to get (lowest*(i-prev_start+1)) or forget (new_area)
+          # so that mono stk is a decreasing stk
+          # '1' and '2' give the information of a period
+          # n=len(heights)
+          # res=0
+          # mono_stk=[] # h[i+1]<=h[i] # (start,end,lowest)
+          # for i in range(n):
+          #     j=len(mono_stk)-1
+          #     global_lowest=float('inf')
+          #     while mono_stk and heights[i]>mono_stk[-1][2] and j>=0:
+          #         # 有对手&打得过
+          #         # start,end,lowest=mono_stk.pop()
+          #         # mono_stk.append((start,end,lowest))
+          #         start,end,lowest=mono_stk[j]
+          #         global_lowest=min(global_lowest,lowest)
+          #         res=max(res,heights[i]*1,global_lowest*(i-start+1))
+          #         j-=1
+          #         if j<0:
+          #             break
+          #     else: # <= or no mono_stack
+          #         # 打不过就加入
+          #         # if mono_stk and heights[i]<=mono_stk[-1][2]:
+          #         if mono_stk:
+          #             start,end,lowest=mono_stk.pop()
+          #             end+=1
+          #             lowest=heights[i]
+          #             mono_stk.append((start,end,lowest))
+          #             # res=max(res,lowest*(i-start+1))
+          #             global_lowest=min(global_lowest,lowest)
+          #             res=max(res,global_lowest*(i-start+1))
+          #             while mono_stk and j>=0:
+          #                 prev_start,prev_end,prev_lowest=mono_stk[j]
+          #                 global_lowest=min(global_lowest,prev_lowest)
+          #                 res=max(res,global_lowest*(i-prev_start+1))
+          #                 j-=1
+          #             continue
+          #     #     # 没对手就立派
+          #     #     else: # no mono_stack
+          #     #         mono_stk.append((i,i,heights[i]))
+          #     #         res=max(res,heights[i]*1)
+          #     #         continue
+          #     mono_stk.append((i,i,heights[i]))
+          #     res=max(res,heights[i]*1)
+          # return res
+  
+          # mono stack
+          n=len(heights)
+          res=0
+          mono_stk=[] # increasing mono_stk
+          heights.append(0) # add a 垃圾回收车/结尾小推车
+          for i in range(n+1):
+              while mono_stk and heights[i]<heights[mono_stk[-1]]: # the right boundary can't lower the bar for those talls, nor the left boundary, or it will be the same question (downgrading the question) as if they were the same bar as they are: [2,3,3,2]->[3,3]/[2,2,2,2]; [2,3,3,2] is now equivalent to [2,2,2,2]
+              # Handle the tallers at first, then the shorters, 先处理高子，再处理矮子
+                  prev=mono_stk.pop()
+                  height=heights[prev] # popped height as lowest, cuz the mono_stk is decreasing backward
+                  # width=(i-1)-0+1 if not mono_stk else (i-1)-(mono_stk[-1]+1)+1
+                  width=i if not mono_stk else i-1-mono_stk[-1]
+                  res=max(res,height*width)
+              # for all
+              mono_stk.append(i)
+          return res
+  ```
+
   
