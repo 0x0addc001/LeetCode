@@ -461,7 +461,7 @@
   ```
 
 
-### 20260213
+### 20260216
 
 - [739. Daily Temperatures](https://leetcode.cn/problems/daily-temperatures/)
 
@@ -491,9 +491,9 @@
   ```
 
 
-### 20260216
+### 20260218
 
-- [739. Daily Temperatures](https://leetcode.cn/problems/daily-temperatures/)
+- [84. Largest Rectangle in Histogram](https://leetcode.cn/problems/largest-rectangle-in-histogram/)
 
   ```python
   class Solution:
@@ -570,6 +570,58 @@
                   res=max(res,height*width)
               # for all
               mono_stk.append(i)
+          return res
+  ```
+
+
+### 20260219
+
+- [152. Maximum Product Subarray](https://leetcode.cn/problems/maximum-product-subarray/)
+
+  ```python
+  class Solution:
+      def maxProduct(self, nums: List[int]) -> int:
+          n=len(nums)
+          # i: start from i
+          # j: end at j
+          # _ 2 3 -2 4
+          # 2
+          # 3
+          # -2
+          # 4
+  
+          # T(n**2) S(n**2)
+          # dp=[[0 for _ in range(n)] for _ in range(n)]
+          # res=-float('inf')
+          # for i in range(n):
+          #     for j in range(i,n):
+          #         if i==j:
+          #             dp[i][j]=nums[i]
+          #         else: # j>i
+          #             dp[i][j]=dp[i][j-1]*nums[j]
+          #         res=max(res,dp[i][j])
+  
+          # T(n**2) S(n)
+          # dp=[0 for _ in range(n)]
+          # res=-float('inf')
+          # for i in range(n):
+          #     for j in range(i,n):
+          #         if i==j:
+          #             dp[j]=nums[j]
+          #         else: # j>i
+          #             dp[j]=dp[j-1]*nums[j]
+          #         res=max(res,dp[j])
+  
+          # T(n) S(1)
+          res=nums[0]
+          acc_max=nums[0]
+          acc_min=nums[0] # used for negative flipping cases
+          for i in range(1,n):
+              pre_max=acc_max
+              pre_min=acc_min
+              acc_max=max(nums[i],nums[i]*pre_max,nums[i]*pre_min)
+              acc_min=min(nums[i],nums[i]*pre_max,nums[i]*pre_min)
+              res=max(res,acc_max) # its not necessary to involve the current num
           return res
   ```
 
