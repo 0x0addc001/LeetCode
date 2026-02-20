@@ -625,4 +625,46 @@
           return res
   ```
 
+
+### 20260220
+
+- [416. Partition Equal Subset Sum](https://leetcode.cn/problems/partition-equal-subset-sum/)
+
+  ```python
+  # dp
+  class Solution:
+      def canPartition(self, nums: List[int]) -> bool:
+          # 1 2 3 4
+          # + - - +
+          tot_sum=sum(nums)
+          if tot_sum%2!=0: # odd
+              return False
+          half_sum=tot_sum//2
+          # we hope to have a subset which is equals to half_sum
+          # n_sum problem
+          # def n_sum(given_nums,target):
+          #     given_nums_len=len(given_nums)
+          #     if given_nums_len==0:
+          #         return target==0
+          #     if given_nums_len==1:
+          #         return target==given_nums[0]
+          #     for i in range(given_nums_len):
+          #         if n_sum(nums[:i]+nums[i+1:],half_sum-given_nums[i]):
+          #             return True
+          #     return False
+          # return n_sum(nums,half_sum)
+          sum_set=set([0]) # [0] for standalone num choosing
+          for num in nums:
+              new_sum_set=set()
+              for s in sum_set:
+                  res=num+s
+                  if res==half_sum:
+                      return True
+                  elif res<half_sum:
+                      # sum_set.add(res) # Set changed size during iteration
+                      new_sum_set.add(res)
+              sum_set |= new_sum_set # union in place
+          return False
+  ```
+
   
