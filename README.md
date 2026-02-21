@@ -667,4 +667,84 @@
           return False
   ```
 
+
+### 20260221
+
+- [32. Longest Valid Parentheses](https://leetcode.cn/problems/longest-valid-parentheses/)
+
+  ```python
+  # bf
+  class Solution:
+      def longestValidParentheses(self, s: str) -> int:
+          # one pass but not necessarily continuous
+          # ctr=0
+          # stk=[]
+          # for c in s:
+          #     if c=='(':
+          #         stk.append('(')
+          #     elif c==')':
+          #         if stk:
+          #             stk.pop()
+          #             ctr+=2
+          # return ctr
+          # one pass and continuous
+          cont_matched_stk=[]
+          par_stk=[]
+          pause_flag=False
+          for c in s:
+              if c=='(':
+                  par_stk.append('(')
+              elif c==')':
+                  if par_stk and par_stk[-1]=='(':
+                      par_stk.pop()
+                      # check swallow then check merge:
+                      if cont_matched_stk and cont_matched_stk[-1][1]==len(par_stk)+1: # only make friends with equal or higher level
+                          num,lev=cont_matched_stk.pop()
+                          num+=2 # swallow smaller
+                          if cont_matched_stk and cont_matched_stk[-1][1]==len(par_stk):
+                              num_,lev_=cont_matched_stk.pop()
+                              num+=num_ # merge equal
+                          cont_matched_stk.append((num,len(par_stk)))
+                      # check merge
+                      elif cont_matched_stk and cont_matched_stk[-1][1]==len(par_stk):
+                          num,lev_=cont_matched_stk.pop()
+                          num+=2 # merge equal
+                          cont_matched_stk.append((num,len(par_stk)))
+                      else:
+                          cont_matched_stk.append((2,len(par_stk)))
+                  else:
+                      # unexpected
+                      par_stk=[]
+                      cont_matched_stk.append((0,0))
+          res=max(cont_matched_stk, key=lambda x:x[0]) if cont_matched_stk else (0,0)
+          return res[0]
+  ```
+
+  ```python
+  class Solution:
+      def longestValidParentheses(self, s: str) -> int:
+          left=right=0
+          res=0
+          for c in s:
+              if c=='(':
+                  left+=1
+              else:
+                  right+=1
+              if left==right:
+                  res=max(res,left*2)
+              elif right>left:
+                  left=right=0
+          left=right=0
+          for c in reversed(s): # (() -> )((
+              if c=='(':
+                  left+=1
+              else:
+                  right+=1
+              if left==right:
+                  res=max(res,left*2)
+              elif left>right:
+                  left=right=0
+          return res
+  ```
+
   
