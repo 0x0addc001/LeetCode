@@ -747,4 +747,45 @@
           return res
   ```
 
+
+### 20260222
+
+- [75. Sort Colors](https://leetcode.cn/problems/sort-colors/)
+
+  ```python
+  class Solution:
+      def sortColors(self, nums: List[int]) -> None:
+          """
+          Do not return anything, modify nums in-place instead.
+          """
+          # nums.sort()
+          
+          # T(n**2) two pass	
+          # freq=Counter(nums)
+          # idx=0
+          # for i in range(3):
+          #     for j in range(freq[i]):
+          #         nums[idx]=i
+          #         idx+=1
+  
+          # T(n) one pass
+          ctr0=ctr1=ctr2=0
+          for num in nums:
+              if num==0:
+                  nums[ctr2]=2 # 往后骚
+                  ctr2+=1
+                  nums[ctr1]=1 # 往后骚
+                  ctr1+=1
+                  nums[ctr0]=0
+                  ctr0+=1
+              elif num==1:
+                  nums[ctr2]=2 # 往后骚
+                  ctr2+=1
+                  nums[ctr1]=1
+                  ctr1+=1
+              elif num==2:
+                  nums[ctr2]=2
+                  ctr2+=1
+  ```
+
   
