@@ -788,4 +788,61 @@
                   ctr2+=1
   ```
 
+
+### 20260311
+
+- [31. Next Permutation](https://leetcode.cn/problems/next-permutation/)
+
+  ```python
+  class Solution:
+      def nextPermutation(self, nums: List[int]) -> None:
+          """
+          Do not return anything, modify nums in-place instead.
+          """
+          # O(n**2)
+          # 1234
+          # 1243 -swap-> 1 342 -sort->13 24
+          # 1324
+          # 1342
+          # 1423
+          # 1432
+          # 2134
+          # ...
+          # 4321
+          n=len(nums)
+          if n==1:
+              return nums
+          for i in range(n-2,-1,-1): # back
+              # min greater
+              min_greater_num=float('inf')
+              min_greater_idx=-1
+              for j in range(i+1,n):
+                  if nums[j]>nums[i] and nums[j]<min_greater_num:
+                      min_greater_num=nums[j]
+                      min_greater_idx=j
+              if min_greater_idx!=-1 and nums[min_greater_idx]>nums[i]:
+                  # swap
+                  nums[i],nums[min_greater_idx]=nums[min_greater_idx],nums[i]
+                  # sort
+                  nums[i+1:]=sorted(nums[i+1:])
+                  return
+          nums.reverse()
+          
+          
+          
+          # O(n) optimization
+          n=len(nums)
+          i=n-2
+          # find the first adjacent ascend, otherwise is descend
+          while i>=0 and nums[i]>=nums[i+1]:
+              i-=1
+          if i>=0:
+              j=n-1
+              # find the first num greater than nums[i] (min greater) along the ascend list (descend in reverse), the worst case is i+1
+              while nums[j]<=nums[i]:
+                  j-=1
+              nums[i],nums[j]=nums[j],nums[i]
+          nums[i+1:]=nums[i+1:][::-1]
+  ```
+
   
