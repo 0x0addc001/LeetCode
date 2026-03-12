@@ -845,4 +845,33 @@
           nums[i+1:]=nums[i+1:][::-1]
   ```
 
+
+### 20260311
+
+- [287. Find the Duplicate Number](https://leetcode.cn/problems/find-the-duplicate-number/)
+
+  ```python
+  class Solution:
+      def findDuplicate(self, nums: List[int]) -> int:
+          n=len(nums)
+          # for i in range(n-1):
+          #     for j in range(i+1,n):
+          #         if nums[i]==nums[j]:
+          #             return nums[i]
+          # return -1
+  
+          # nums.sort()
+          # for i in range(n-1):
+          #     if nums[i]==nums[i+1]:
+          #         return nums[i]
+          # return -1
+          
+          kvcache=defaultdict(int)
+          for i in nums:
+              if kvcache[i]>0:
+                  return i
+              kvcache[i]+=1
+          return -1
+  ```
+
   
