@@ -846,7 +846,7 @@
   ```
 
 
-### 20260311
+### 20260312
 
 - [287. Find the Duplicate Number](https://leetcode.cn/problems/find-the-duplicate-number/)
 
@@ -854,6 +854,7 @@
   class Solution:
       def findDuplicate(self, nums: List[int]) -> int:
           n=len(nums)
+          
           # for i in range(n-1):
           #     for j in range(i+1,n):
           #         if nums[i]==nums[j]:
@@ -872,6 +873,34 @@
                   return i
               kvcache[i]+=1
           return -1
+  ```
+  
+
+### 20260314
+
+- [198. House Robber](https://leetcode.cn/problems/house-robber/)
+
+  ```python
+  class Solution:
+      def rob(self, nums: List[int]) -> int:
+          n=len(nums)
+          if n==1:
+              return nums[0]
+              
+          # S(n)
+          # benefit=[0 for _ in range(n)]
+          # benefit[0]=nums[0]
+          # benefit[1]=max(nums[0],nums[1])
+          # for i in range(2,n):
+          #     benefit[i]=max(benefit[i-2]+nums[i],benefit[i-1])
+          # return benefit[n-1]
+  
+          # S(1)
+          pre=nums[0]
+          cur=max(nums[0],nums[1])
+          for i in range(2,n):
+              pre,cur=cur,max(pre+nums[i],cur)
+          return cur
   ```
 
   
