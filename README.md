@@ -903,4 +903,49 @@
           return cur
   ```
 
+
+### 20260318
+
+- [148. Sort List](https://leetcode.cn/problems/sort-list/)
+
+  ```python
+  # Definition for singly-linked list.
+  # class ListNode:
+  #     def __init__(self, val=0, next=None):
+  #         self.val = val
+  #         self.next = next
+  class Solution:
+      def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+          if not head or not head.next: # at least 2
+              return head
+          fast=head.next # !!!!! designed for 2-node situation
+          slow=head
+          while fast and fast.next:
+              fast=fast.next.next
+              slow=slow.next
+          mid=slow.next
+          slow.next=None # !!!!! cut off relationship between the 2
+          list1=self.sortList(head)
+          list2=self.sortList(mid)
+          return self.merge(list1,list2)
+  
+      def merge(self,head1,head2): # !!!!! self
+          dummy=ListNode()
+          temp=dummy
+          while head1 and head2:
+              if head1.val<=head2.val:
+                  temp.next=head1
+                  head1=head1.next
+                  temp=temp.next
+              else:
+                  temp.next=head2
+                  head2=head2.next
+                  temp=temp.next
+          if head1:
+              temp.next=head1
+          if head2:
+              temp.next=head2
+          return dummy.next
+  ```
+
   
