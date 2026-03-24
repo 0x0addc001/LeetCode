@@ -948,4 +948,137 @@
           return dummy.next
   ```
 
+
+## 20260321
+
+- [146. LRU Cache](https://leetcode.cn/problems/lru-cache/)
+
+  ```python
+  class LRUCache:
+  
+      def __init__(self, capacity: int):
+          self.capacity=capacity
+          self.cnt=0
+          self.kvcache=OrderedDict()
+  
+      def get(self, key: int) -> int:
+          if key in self.kvcache:
+              value=self.kvcache[key]
+              self.kvcache.move_to_end(key)
+              return value
+          else:
+              return -1
+          
+      def put(self, key: int, value: int) -> None:
+          if key in self.kvcache:
+              self.kvcache[key]=value
+              self.kvcache.move_to_end(key)
+          else:
+              if self.cnt>=self.capacity:
+                  # evict
+                  self.kvcache.popitem(last=False)
+                  self.cnt-=1
+              # add
+              self.kvcache[key]=value
+              self.cnt+=1
+          
+  
+  
+  # Your LRUCache object will be instantiated and called as such:
+  # obj = LRUCache(capacity)
+  # param_1 = obj.get(key)
+  # obj.put(key,value)
+  ```
+
+  
+
+## 20260324
+
+- [3. Longest Substring Without Repeating Characters](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)
+
+  ```python
+  class Solution:
+      def lengthOfLongestSubstring(self, s: str) -> int:
+          n=len(s)
+          cnt=0
+          seen=defaultdict(int)
+          left=0
+          for right in range(n):
+              while left<=right and seen[s[right]]>0:
+                  seen[s[left]]-=1
+                  left+=1
+              seen[s[right]]+=1
+              cnt=max(cnt,right-left+1)
+          return cnt
+  ```
+
+- [25. Reverse Nodes in k-Group](https://leetcode.cn/problems/reverse-nodes-in-k-group/)
+
+  ```python
+  # Definition for singly-linked list.
+  # class ListNode:
+  #     def __init__(self, val=0, next=None):
+  #         self.val = val
+  #         self.next = next
+  class Solution:
+      def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+          # find pre
+          # find post
+          # reverse pre [...] post
+          # reconnect
+          # move pre post
+  
+          # X->A->B->C->D
+  
+          # X->B->C->D
+          # Y->A
+  
+          # X->C->D
+          # Y->B->A
+          def reverse(hd):
+              if not hd:
+                  return hd
+              dmy=ListNode()
+              dmy2=ListNode()
+              dmy.next=hd
+              while dmy and dmy.next:
+                  dmy2next=dmy2.next
+                  dmy2.next=dmy.next
+                  dmy.next=dmy.next.next
+                  dmy2.next.next=dmy2next
+              return dmy2.next
+  
+          def reverse2(hd):
+              if not hd:
+                  return hd
+              prev=None
+              curr=hd
+              while curr: # iter point-back
+                  currnext=curr.next
+                  curr.next=prev
+                  prev=curr
+                  curr=currnext
+              return prev
+  
+          dummy=ListNode()
+          dummy.next=head
+          pre=post=dummy
+          while pre.next:
+              cnt=k
+              post=pre
+              while cnt>0 and post.next: # the last one of (this group or the entire list)
+                  post=post.next
+                  cnt-=1
+              if cnt>0:
+                  break
+              postnext=post.next
+              post.next=None # cut
+              newList=reverse(pre.next)
+              pre.next=newList
+              while pre and pre.next:
+                  pre=pre.next
+              pre.next=postnext
+          return dummy.next
+  ```
+
   
