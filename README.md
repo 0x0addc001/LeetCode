@@ -1081,4 +1081,82 @@
           return dummy.next
   ```
 
+
+## 20260403
+
+- [206. Reverse Linked List](https://leetcode.cn/problems/reverse-linked-list/)
+
+  ```python
+  # Definition for singly-linked list.
+  # class ListNode:
+  #     def __init__(self, val=0, next=None):
+  #         self.val = val
+  #         self.next = next
+  class Solution:
+      def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+          # 1 <- 2 3 4 5
+          if not head:
+              return head
+          '''
+          pre=head
+          cur=head.next
+          pre.next=None # or will sink into dead recur between 1 & 2
+          while pre and cur:
+              temp=cur.next # 3
+              cur.next=pre # 2->1
+              pre=cur # 1=>2
+              cur=temp # 2=>3
+          return pre
+          '''
+          # N<-1 2
+          pre=None
+          cur=head
+          while cur:
+              tp=cur.next # 2
+              cur.next=pre # 1->N
+              pre=cur # N=>1
+              cur=tp # 1=>2
+          return pre
+  ```
+
+- [23. Merge k Sorted Lists](https://leetcode.cn/problems/merge-k-sorted-lists/)
+
+  ```python
+  # Definition for singly-linked list.
+  # class ListNode:
+  #     def __init__(self, val=0, next=None):
+  #         self.val = val
+  #         self.next = next
+  class Solution:
+      def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+          # bf
+          if not lists:
+              return None
+          dummy=ListNode()
+          cur_ptr=dummy
+          n=len(lists)
+          while True:
+              min_val=float('inf')
+              min_idx=-1
+              for i in range(n):
+                  node=lists[i]
+                  if node and node.val<min_val:
+                      min_val=node.val
+                      min_idx=i
+              if min_idx==-1:
+                  break
+              cur_ptr.next=lists[min_idx]
+              cur_ptr=cur_ptr.next
+              print(cur_ptr.val)
+              # min_ptr=min_ptr.next # only update local value, doesn't update the value in the original list
+              # for node in lists: # it doesn't work too
+              #     if node.val==min_ptr.val:
+              #         node=node.next
+              #         break
+              lists[min_idx]=lists[min_idx].next
+          return dummy.next
+          # optimize1: lists -> heap o(nlogk)
+          # optimize2: merge 2 list for each loop o(nlogk)
+  ```
+
   
