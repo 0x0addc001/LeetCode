@@ -1159,4 +1159,146 @@
           # optimize2: merge 2 list for each loop o(nlogk)
   ```
 
+## 20260405
+- [23. Merge k Sorted Lists](https://leetcode.cn/problems/merge-k-sorted-lists/)
+
+   ```python
+    # Definition for singly-linked list.
+    # class ListNode:
+    #     def __init__(self, val=0, next=None):
+    #         self.val = val
+    #         self.next = next
+    class Solution:
+        def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+            # bf
+            if not lists:
+                return None
+            dummy=ListNode()
+            cur_ptr=dummy
+            n=len(lists)
+            while True:
+                min_val=float('inf')
+                min_idx=-1
+                for i in range(n):
+                    node=lists[i]
+                    if node and node.val<min_val:
+                        min_val=node.val
+                        min_idx=i
+                if min_idx==-1:
+                    break
+                cur_ptr.next=lists[min_idx]
+                cur_ptr=cur_ptr.next
+                print(cur_ptr.val)
+                # min_ptr=min_ptr.next # only update local value, doesn't update the value in the original list
+                # for node in lists: # it doesn't work too
+                #     if node.val==min_ptr.val:
+                #         node=node.next
+                #         break
+                lists[min_idx]=lists[min_idx].next
+            return dummy.next
+    
+            # optimize1: lists -> heap o(nlogk) [priority q]
+            if not lists:
+                return None
+            dummy=ListNode()
+            cur=dummy
+            hp=[]
+            # for node in lists:
+            #     if node:
+            #         heapq.heappush(hp,(node.val,id(node),node)) # avoid "TypeError: '<' not supported between instances of 'Node' and 'Node'", because if val=val, then move to the next criteria
+            # cleaner impl
+            hp=[(node.val,id(node),node) for node in lists if node]
+            heapq.heapify(hp)
+            while hp:
+                val,idx,nd=heapq.heappop(hp)
+                cur.next=nd
+                cur=cur.next
+                if nd.next:
+                    heapq.heappush(hp,(nd.next.val,id(nd.next),nd.next))
+            return dummy.next
+            
+            # bf2
+            if not lists:
+                return None
+            def merge2(n1,n2):
+                if not n1:
+                    return n2
+                if not n2:
+                    return n1
+                dmy=ListNode()
+                cur=dmy
+                while n1 and n2:
+                    if n1.val<n2.val:
+                        cur.next=n1
+                        n1=n1.next
+                    else:
+                        cur.next=n2
+                        n2=n2.next
+                    cur=cur.next
+                cur.next=n1 if n1 else n2
+                return dmy.next
+            res=None
+            for node in lists:
+                res=merge2(res,node)
+            return res
+            
+            # optimize2: merge 2 list for each loop o(nlogk)
+            if not lists:
+                return None
+            def merge2(n1,n2):
+                if not n1:
+                    return n2
+                if not n2:
+                    return n1
+                dmy=ListNode()
+                cur=dmy
+                while n1 and n2:
+                    if n1.val<n2.val:
+                        cur.next=n1
+                        n1=n1.next
+                    else:
+                        cur.next=n2
+                        n2=n2.next
+                    cur=cur.next
+                cur.next=n1 if n1 else n2
+                return dmy.next
+            # DC Tree
+            while len(lists)>1: # from 2**n to 1
+                merged_lists=[]
+                for i in range(0,len(lists),2): # merge 2 by 2
+                    node1=lists[i]
+                    node2=lists[i+1] if (i+1) < len(lists) else None
+                    merged_lists.append((merge2(node1,node2)))
+                lists=merged_lists
+            return lists[0]
+   ```
+
+- [21. Merge Two Sorted Lists](https://leetcode.cn/problems/merge-two-sorted-lists/)
+
+  ```python
+  # Definition for singly-linked list.
+  # class ListNode:
+  #     def __init__(self, val=0, next=None):
+  #         self.val = val
+  #         self.next = next
+  class Solution:
+      def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+          if not list1:
+              return list2
+          if not list2:
+              return list1
+          dummy=ListNode()
+          cur=dummy
+          while list1 and list2:
+              if list1.val<list2.val:
+                  cur.next=list1
+                  list1=list1.next
+              else:
+                  cur.next=list2
+                  list2=list2.next
+              cur=cur.next
+          cur.next=list1 if list1 else list2
+          return dummy.next
+  ```
+
   
