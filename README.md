@@ -1301,4 +1301,70 @@
           return dummy.next
   ```
 
+
+## 20260406
+
+- [141. Linked List Cycle](https://leetcode.cn/problems/linked-list-cycle/)
+
+  ```python
+  # Definition for singly-linked list.
+  # class ListNode:
+  #     def __init__(self, x):
+  #         self.val = x
+  #         self.next = None
+  
+  class Solution:
+      def hasCycle(self, head: Optional[ListNode]) -> bool:
+          if not head:
+              return head
+          slow=head
+          fast=head.next
+          while fast and fast.next:
+              if fast==slow:
+                  return True
+              fast=fast.next.next
+              slow=slow.next
+          return False
+  ```
+
+- [2. Add Two Numbers](https://leetcode.cn/problems/add-two-numbers/)
+
+  ```python
+  # Definition for singly-linked list.
+  # class ListNode:
+  #     def __init__(self, val=0, next=None):
+  #         self.val = val
+  #         self.next = next
+  class Solution:
+      def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+          dummy=ListNode()
+          cur=dummy
+          overflow=0
+          while l1 and l2:
+              nex=ListNode()
+              nex.val=((l1.val+l2.val+overflow)%10)
+              overflow=((l1.val+l2.val+overflow)//10)
+              cur.next=nex
+              cur=cur.next
+              l1=l1.next
+              l2=l2.next
+          while l1:
+              nex=ListNode()
+              nex.val=((l1.val+overflow)%10)
+              overflow=((l1.val+overflow)//10)
+              cur.next=nex
+              cur=cur.next
+              l1=l1.next
+          while l2:
+              nex=ListNode()
+              nex.val=((l2.val+overflow)%10)
+              overflow=((l2.val+overflow)//10)
+              cur.next=nex
+              cur=cur.next
+              l2=l2.next
+          if overflow==1:
+              cur.next=ListNode(val=1)
+          return dummy.next
+  ```
+
   
