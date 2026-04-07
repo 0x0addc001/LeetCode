@@ -1367,4 +1367,73 @@
           return dummy.next
   ```
 
+
+## 20260407
+
+- [19. Remove Nth Node From End of List](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/)
+
+  ```python
+  # Definition for singly-linked list.
+  # class ListNode:
+  #     def __init__(self, val=0, next=None):
+  #         self.val = val
+  #         self.next = next
+  class Solution:
+      def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+          if not head:
+              return head
+          # prewalk k
+          # set dummy
+          # step num to end: cnt
+          # step num to n before end: cnt-n+1
+          # step num to n+1 brefore end: cnt-n+1-1=cnt-n
+          cnt=0
+          cur=head
+          while cur:
+              cnt+=1
+              cur=cur.next
+          dummy=ListNode(next=head)
+          cur=dummy
+          k=cnt-n
+          while k>0:
+              cur=cur.next
+              k-=1
+          cur.next=cur.next.next
+          return dummy.next
+  ```
+
+- [138. Copy List with Random Pointer](https://leetcode.cn/problems/copy-list-with-random-pointer/)
+
+  ```python
+  """
+  # Definition for a Node.
+  class Node:
+      def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+          self.val = int(x)
+          self.next = next
+          self.random = random
+  """
+  
+  class Solution:
+      def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+          # copy
+          # mapping dict node_old:node_new
+          dummy=Node(x=0)
+          node_map=dict()
+          cur=dummy
+          node_old=head
+          while node_old:
+              node_new=Node(x=node_old.val,next=node_old.next,random=node_old.random)
+              node_map[node_old]=node_new
+              cur.next=node_new
+              cur=cur.next
+              node_old=node_old.next
+          cur=dummy.next
+          while cur:
+              if cur.random:
+                  cur.random=node_map[cur.random]
+              cur=cur.next
+          return dummy.next
+  ```
+
   
