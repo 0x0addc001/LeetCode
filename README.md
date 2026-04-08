@@ -1436,4 +1436,86 @@
           return dummy.next
   ```
 
+
+## 20260408
+
+- [208. Implement Trie (Prefix Tree)](https://leetcode.cn/problems/implement-trie-prefix-tree/)
+
+  ```python
+  # recur
+  class Trie:
+  
+      def __init__(self):
+          self.children=dict() # char:node
+  
+      def insert(self, word: str) -> None:
+          if not word:
+              if None not in self.children:
+                  self.children[None]=None
+          else:
+              if word[0] in self.children: # word[0] is the char i nees to find next
+                  self.children[word[0]].insert(word[1:])
+              else:
+                  temp=Trie()
+                  temp.insert(word[1:])
+                  self.children[word[0]]=temp
+  
+      def search(self, word: str) -> bool:
+          if not word:
+              if None not in self.children:
+                  return False
+              return True
+          else:
+              if word[0] in self.children:
+                  return self.children[word[0]].search(word[1:])
+              else:
+                  return False
+  
+      def startsWith(self, prefix: str) -> bool:
+          if not prefix:
+              return True
+          else:
+              if prefix[0] in self.children:
+                  return self.children[prefix[0]].startsWith(prefix[1:])
+              else:
+                  return False
+  
+  # iter
+  class Trie:
+  
+      def __init__(self):
+          self.children={} # char:node
+          self.is_end=False
+  
+      def insert(self, word: str) -> None:
+          node=self
+          for char in word:
+              if char not in node.children:
+                  node.children[char]=Trie()
+              node=node.children[char]
+          node.is_end=True
+  
+      def search(self, word: str) -> bool:
+          node=self
+          for char in word:
+              if char not in node.children:
+                  return False
+              node=node.children[char]
+          return node.is_end
+  
+      def startsWith(self, prefix: str) -> bool:
+          node=self
+          for char in prefix:
+              if char not in node.children:
+                  return False
+              node=node.children[char]
+          return True
+  
+  # Your Trie object will be instantiated and called as such:
+  # obj = Trie()
+  # obj.insert(word)
+  # param_2 = obj.search(word)
+  # param_3 = obj.startsWith(prefix)
+  ```
+
   
