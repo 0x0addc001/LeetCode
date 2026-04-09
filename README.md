@@ -1518,4 +1518,58 @@
   # param_3 = obj.startsWith(prefix)
   ```
 
+
+## 20260409
+
+- [226. Invert Binary Tree](https://leetcode.cn/problems/invert-binary-tree/)
+
+  ```python
+  # Definition for a binary tree node.
+  # class TreeNode:
+  #     def __init__(self, val=0, left=None, right=None):
+  #         self.val = val
+  #         self.left = left
+  #         self.right = right
+  class Solution:
+      def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+          # standard recur
+          if not root:
+              return root
+          root.left,root.right=root.right,root.left
+          self.invertTree(root.left)
+          self.invertTree(root.right)
+          return root
+      
+          # shorter recur
+          if not root:
+              return root
+          root.left,root.right=self.invertTree(root.right),self.invertTree(root.left)
+          return root
+  ```
+
+- [200. Number of Islands](https://leetcode.cn/problems/number-of-islands/)
+
+  ```python
+  class Solution:
+      def numIslands(self, grid: List[List[str]]) -> int:
+          m,n=len(grid),len(grid[0])
+          cnt=0
+          def dfs(x,y):
+              if x>=m or x<0 or y>=n or y<0:
+                  return
+              if grid[x][y]=='0' or grid[x][y]=='2':
+                  return
+              grid[x][y]='2'
+              neighbour=[(0,1),(0,-1),(1,0),(-1,0)]
+              for dx,dy in neighbour:
+                  dfs(x+dx,y+dy)
+          for i in range(m):
+              for j in range(n):
+                  if grid[i][j]!='0' and grid[i][j]!='2': # 2=searched
+                      dfs(i,j)
+                      cnt+=1
+          return cnt   
+  ```
+
   
+
