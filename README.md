@@ -1571,5 +1571,62 @@
           return cnt   
   ```
 
-  
 
+## 20260410
+
+- [207. Course Schedule](https://leetcode.cn/problems/course-schedule/)
+
+  ```python
+  class Solution:
+      def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+          # no loop in graph
+          # [0,1]
+          # [1,0]
+          # a->b->a
+          # a->b->c->a
+          # import numpy
+          # relation=numpy.zeros((numCourses,numCourses))
+          # relation=[[0]*numCourses for _ in range(numCourses)]
+          # for ai, bi in prerequisites:
+          #     # bi->ai
+          #     relation[bi][ai]=1
+  
+          # Relation Matrix
+          # temp=relation
+          # for _ in range(numCourses):
+          #     for i in range(numCourses):
+          #         if temp[i][i]>0:
+          #             return False
+          #     temp=temp@relation
+          # return True
+  
+          # Floyd
+          # for k in range(numCourses):
+          #     for i in range(numCourses):
+          #         for j in range(numCourses):
+          #             relation[i][j]=relation[i][j] or (relation[i][k] and relation [k][j])
+          #     if relation[k][k]:
+          #         return False
+          # return True
+  
+          # Topo Sort
+          from collections import deque
+          in_degree=[0]*numCourses # if 0 then enque
+          follower=[[] for _ in range(numCourses)]
+          for ai,bi in prerequisites:
+              in_degree[ai]+=1
+              follower[bi].append(ai)
+          cnt=0
+          deq=deque([i for i in range(numCourses) if in_degree[i]==0])
+          while deq:
+              course=deq.popleft()
+              cnt+=1
+              if follower[course]:
+                  for c in follower[course]:
+                      in_degree[c]-=1
+                      if in_degree[c]==0:
+                          deq.append(c) # append apendleft pop popleft
+          return cnt==numCourses  
+  ```
+
+  
