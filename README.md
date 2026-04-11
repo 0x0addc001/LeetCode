@@ -1,8 +1,6 @@
 # LeetCode
 
-## 2026
-
-### 20260102
+## 20260102
 
 - [240. Search a 2D Matrix II](https://leetcode.cn/problems/search-a-2d-matrix-ii/)
 
@@ -23,7 +21,7 @@
           return False
   ```
 
-### 20260103
+## 20260103
 
 - [24. Swap Nodes in Pairs](https://leetcode.cn/problems/swap-nodes-in-pairs/)
 
@@ -40,7 +38,7 @@
   ```
 
 
-### 20260104
+## 20260104
 
 - [41. First Missing Positive](https://leetcode.cn/problems/first-missing-positive/)
 
@@ -60,7 +58,7 @@
           return ans+1
   ```
 
-### 20260105
+## 20260105
 
 - [437. Path Sum III](https://leetcode.cn/problems/path-sum-iii/)
 
@@ -89,7 +87,7 @@
           return ctr
   ```
 
-### 20260107
+## 20260107
 
 - [437. Path Sum III](https://leetcode.cn/problems/path-sum-iii/)
 
@@ -127,7 +125,7 @@
   ```
   
 
-### 20260108
+## 20260108
 
 - [994. Rotting Oranges](https://leetcode.cn/problems/rotting-oranges/)
 
@@ -165,7 +163,7 @@
               return -1
   ```
 
-### 20260115
+## 20260115
 
 - [78. Subsets](https://leetcode.cn/problems/subsets/)
 
@@ -185,7 +183,7 @@
           return ans
   ```
 
-### 20260116
+## 20260116
 
 - [78. Subsets](https://leetcode.cn/problems/subsets/)
 
@@ -212,7 +210,7 @@
   ```
   
 
-### 20260125
+## 20260125
 
 - [131. Palindrome Partitioning](https://leetcode.cn/problems/palindrome-partitioning/)
 
@@ -277,7 +275,7 @@
   ```
 
 
-### 20260126
+## 20260126
 
 - [51. N-Queens](https://leetcode.cn/problems/n-queens/)
 
@@ -322,7 +320,7 @@
   ```
 
 
-### 20260201
+## 20260201
 
 - [347. Top K Frequent Elements](https://leetcode.cn/problems/top-k-frequent-elements/)
 
@@ -354,7 +352,7 @@
   ```
 
 
-### 20260210
+## 20260210
 
 - [279. Perfect Squares](https://leetcode.cn/problems/perfect-squares/)
 
@@ -390,7 +388,7 @@
   ```
 
 
-### 20260211
+## 20260211
 
 - [1143. Longest Common Subsequence](https://leetcode.cn/problems/longest-common-subsequence/)
 
@@ -432,7 +430,7 @@
   ```
 
 
-### 20260213
+## 20260213
 
 - [394. Decode String](https://leetcode.cn/problems/decode-string/)
 
@@ -461,7 +459,7 @@
   ```
 
 
-### 20260216
+## 20260216
 
 - [739. Daily Temperatures](https://leetcode.cn/problems/daily-temperatures/)
 
@@ -491,7 +489,7 @@
   ```
 
 
-### 20260218
+## 20260218
 
 - [84. Largest Rectangle in Histogram](https://leetcode.cn/problems/largest-rectangle-in-histogram/)
 
@@ -574,7 +572,7 @@
   ```
 
 
-### 20260219
+## 20260219
 
 - [152. Maximum Product Subarray](https://leetcode.cn/problems/maximum-product-subarray/)
 
@@ -626,7 +624,7 @@
   ```
 
 
-### 20260220
+## 20260220
 
 - [416. Partition Equal Subset Sum](https://leetcode.cn/problems/partition-equal-subset-sum/)
 
@@ -668,7 +666,7 @@
   ```
 
 
-### 20260221
+## 20260221
 
 - [32. Longest Valid Parentheses](https://leetcode.cn/problems/longest-valid-parentheses/)
 
@@ -748,7 +746,7 @@
   ```
 
 
-### 20260222
+## 20260222
 
 - [75. Sort Colors](https://leetcode.cn/problems/sort-colors/)
 
@@ -789,7 +787,7 @@
   ```
 
 
-### 20260311
+## 20260311
 
 - [31. Next Permutation](https://leetcode.cn/problems/next-permutation/)
 
@@ -846,7 +844,7 @@
   ```
 
 
-### 20260312
+## 20260312
 
 - [287. Find the Duplicate Number](https://leetcode.cn/problems/find-the-duplicate-number/)
 
@@ -876,7 +874,7 @@
   ```
   
 
-### 20260314
+## 20260314
 
 - [198. House Robber](https://leetcode.cn/problems/house-robber/)
 
@@ -904,7 +902,7 @@
   ```
 
 
-### 20260318
+## 20260318
 
 - [148. Sort List](https://leetcode.cn/problems/sort-list/)
 
@@ -1627,6 +1625,45 @@
                       if in_degree[c]==0:
                           deq.append(c) # append apendleft pop popleft
           return cnt==numCourses  
+  ```
+
+
+## 20260411
+
+- [300. Longest Increasing Subsequence](https://leetcode.cn/problems/longest-increasing-subsequence/)
+
+  ```python
+  class Solution:
+      def lengthOfLIS(self, nums: List[int]) -> int:
+  
+          # dp
+          '''
+          if not nums:
+              return 0
+          n=len(nums)
+          dp=[1]*n # max_len ends with idx i
+          for i in range(n):
+              max_pre=0
+              for j in range(i): # find the best pre with largest dp val
+                  if nums[i]>nums[j]:
+                      max_pre=max(max_pre,dp[j])
+              dp[i]=max_pre+1
+          # return dp[n-1]
+          return max(dp)
+          '''
+  
+          # dp optimize
+          if not nums:
+              return 0
+          n=len(nums)
+          dp=[1]*n # max_len ends with idx i
+          for i in range(n):
+              for j in range(i): # fin best pre with largest dp val
+                  if nums[i]>nums[j]:
+                      dp[i]=max(dp[i],dp[j]+1)
+          return max(dp)
+  
+          # DP 核心问题：这个问题的上一个问题是什么
   ```
 
   
