@@ -1658,12 +1658,35 @@
           n=len(nums)
           dp=[1]*n # max_len ends with idx i
           for i in range(n):
-              for j in range(i): # fin best pre with largest dp val
+              for j in range(i): # find best pre with largest dp val
                   if nums[i]>nums[j]:
                       dp[i]=max(dp[i],dp[j]+1)
           return max(dp)
   
           # DP 核心问题：这个问题的上一个问题是什么
+  ```
+
+
+## 20260412
+
+- [139. Word Break](https://leetcode.cn/problems/word-break/)
+
+  ```python
+  class Solution:
+      def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+          if not s or not wordDict:
+              return False
+          n=len(s)
+          wordDict=set(wordDict) # O(1) lookup optimize
+          @cache
+          def dp(i): # valid till i (0...n)
+              if i==0:
+                  return True
+              for w in wordDict:
+                  if i>=len(w) and w==s[i-len(w):i] and dp(i-len(w)):
+                      return True
+              return False
+          return dp(n)
   ```
 
   
