@@ -1689,4 +1689,26 @@
           return dp(n)
   ```
 
+
+## 20260413
+
+- [322. Coin Change](https://leetcode.cn/problems/coin-change/)
+
+  ```python
+  class Solution:
+      def coinChange(self, coins: List[int], amount: int) -> int:
+        if not coins or not amount:
+          return 0
+        @cache
+        def dp(amt):
+          if amt==0:
+            return 0
+          res=float('inf')
+          for c in coins:
+            if amt-c>=0 and dp(amt-c)!=-1:
+              res=min(res,dp(amt-c)+1)
+          return res if res!=float('inf') else -1
+        return dp(amount)
+  ```
+
   
