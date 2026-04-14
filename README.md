@@ -1711,4 +1711,59 @@
         return dp(amount)
   ```
 
+
+## 20260414
+
+- [17. Letter Combinations of a Phone Number](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/)
+
+  ```python
+  class Solution:
+      def letterCombinations(self, digits: str) -> List[str]:
+          if not digits:
+              return []
+          n=len(digits)
+          mp={'2':['a','b','c'],'3':['d','e','f'],'4':['g','h','i'],'5':['j','k','l'],'6':['m','n','o'],'7':['p','q','r','s'],'8':['t','u','v'],'9':['w','x','y','z']}
+  
+          # it bfs
+          '''
+          res=['']
+          for d in digits:
+              cands=mp[d]
+              res_new=[]
+              for r in res:
+                  for c in cands:
+                      res_new.append(r+c)
+              res=res_new
+          return res
+          '''
+  
+          # dp recur bfs
+          '''
+          def dp(idx,res):
+              if idx==n:
+                  return res
+              cands=mp[digits[idx]]
+              res_new=[]
+              for r in res:
+                  for c in cands:
+                      res_new.append(r+c)
+              return dp(idx+1,res_new)
+          return dp(0,[''])
+          '''
+  
+          # bt dfs
+          def bt(idx):
+              if idx==n:
+                  rollouts.append(''.join(rollout))
+                  return
+              for c in mp[digits[idx]]:
+                  rollout.append(c)
+                  bt(idx+1)
+                  rollout.pop()
+          rollouts=[]
+          rollout=[]
+          bt(0)
+          return rollouts
+  ```
+
   
