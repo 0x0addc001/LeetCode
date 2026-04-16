@@ -1766,4 +1766,128 @@
           return rollouts
   ```
 
+
+## 20260415
+
+- [104. Maximum Depth of Binary Tree](https://leetcode.cn/problems/maximum-depth-of-binary-tree/)
+
+  ```python
+  # Definition for a binary tree node.
+  # class TreeNode:
+  #     def __init__(self, val=0, left=None, right=None):
+  #         self.val = val
+  #         self.left = left
+  #         self.right = right
+  class Solution:
+      def maxDepth(self, root: Optional[TreeNode]) -> int:
+          # bfs
+          if not root:
+              return 0
+          que=deque([root])
+          cnt=0
+          while que:
+              curLev=len(que)
+              cnt+=1
+              for i in range(curLev):
+                  node=que.popleft()
+                  if node.left:
+                      que.append(node.left)
+                  if node.right:
+                      que.append(node.right)
+          return cnt
+  ```
+
+- [101. Symmetric Tree](https://leetcode.cn/problems/symmetric-tree/)
+
+  ```python
+  # Definition for a binary tree node.
+  # class TreeNode:
+  #     def __init__(self, val=0, left=None, right=None):
+  #         self.val = val
+  #         self.left = left
+  #         self.right = right
+  class Solution:
+      def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+          # bfs
+          if not root:
+              return False
+          # if not root.left and not root.right:
+          #     return True
+          def mirror(a,b):
+              if not a and not b:
+                  return True
+              if not a or not b:
+                  return False
+              return a.val==b.val and mirror(a.left,b.right) and mirror(a.right,b.left)
+          # if root.left and root.right and root.left.val==root.right.val:
+          #     return mirror(root.left,root.right)
+          # return False
+          return mirror(root.left,root.right)
+  ```
+
+- [108. Convert Sorted Array to Binary Search Tree](https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/)
+
+  ```python
+  # Definition for a binary tree node.
+  # class TreeNode:
+  #     def __init__(self, val=0, left=None, right=None):
+  #         self.val = val
+  #         self.left = left
+  #         self.right = right
+  class Solution:
+      def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
+          if not nums:
+              return None
+          n=len(nums)
+          mid=n//2
+          root=TreeNode(val=nums[mid],left=self.sortedArrayToBST(nums[:mid]),right=self.sortedArrayToBST(nums[mid+1:]))
+          return root
+  ```
+
+
+## 20260416
+
+- [46. Permutations](https://leetcode.cn/problems/permutations/)
+
+  ```python
+  class Solution:
+      def permute(self, nums: List[int]) -> List[List[int]]:
+  
+          # if not nums:
+          #     return None
+          # res=[]
+          # rollout=[]
+          # def bt(idx):
+          #     if idx==len(nums):
+          #         res.append(rollout[:])
+          #         return
+          #     for n in nums:
+          #         if n not in rollout:
+          #             rollout.append(n)
+          #             bt(idx+1)
+          #             rollout.pop()
+          # bt(0)
+          # return res
+          
+          # optimize lookup
+          if not nums:
+              return None
+          res=[]
+          rollout=[]
+          visited=[False]*len(nums)
+          def bt():
+              if len(rollout)==len(nums):
+                  res.append(rollout[:])
+                  return
+              for i in range(len(nums)):
+                  if not visited[i]:
+                      visited[i]=True
+                      rollout.append(nums[i])
+                      bt()
+                      rollout.pop()
+                      visited[i]=False
+          bt()
+          return res
+  ```
+
   
