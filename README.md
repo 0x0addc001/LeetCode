@@ -1890,4 +1890,31 @@
           return res
   ```
 
+
+## 20260417
+
+- [39. Combination Sum](https://leetcode.cn/problems/combination-sum/)
+
+  ```python
+  class Solution:
+      def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+          if not candidates or not target:
+              return [[]]
+          res=set()
+          rollout=[]
+          n=len(candidates)
+          def bt():
+              cur=sum(rollout)
+              if cur==target:
+                  res.add(tuple(sorted(rollout[:])))
+                  return
+              for i in range(n):
+                  if cur+candidates[i]<=target:
+                      rollout.append(candidates[i])
+                      bt()
+                      rollout.pop()
+          bt()
+          return list(res)
+  ```
+
   
