@@ -1969,4 +1969,24 @@
           return res
   ```
 
+
+- [62. Unique Paths](https://leetcode.cn/problems/unique-paths/)
+
+  ```python
+  class Solution:
+      def uniquePaths(self, m: int, n: int) -> int:
+          @cache
+          def dp(x,y):
+              if x==0 or y==0:
+                  return 1
+              # if x>0 and y>0:
+              #     return dp(x-1,y)+dp(x,y-1)
+              # if x>0:
+              #     return dp(x-1,y)
+              # if y>0:
+              #     return dp(x,y-1)
+              return dp(x-1,y)+dp(x,y-1)
+          return dp(m-1,n-1)
+  ```
+
   
