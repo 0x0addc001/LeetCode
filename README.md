@@ -1917,4 +1917,56 @@
           return list(res)
   ```
 
+
+## 20260418
+
+- [22. Generate Parentheses](https://leetcode.cn/problems/generate-parentheses/)
+
+  ```python
+  class Solution:
+      def generateParenthesis(self, n: int) -> List[str]:
+          if n==0:
+              return [""]
+          res=[]
+          rollout=[]
+          '''
+          def bt(l=0,r=0):
+              if l<r: # ensure l>=r
+                  return
+              if l==n and r==n:
+                  res.append(''.join(rollout))
+                  return
+              if l<=n:
+                  # add left
+                  l+=1
+                  rollout.append('(')
+                  bt(l,r)
+                  rollout.pop()
+                  l-=1
+                  # add right
+                  r+=1
+                  rollout.append(')')
+                  bt(l,r)
+                  rollout.pop()
+                  r-=1
+          '''
+          # optimize
+          def bt(l=0,r=0):
+              if l<r or l>n: # not ((l>=r) and (l<=n))
+                  return
+              if l==n and r==n:
+                  res.append(''.join(rollout))
+                  return
+              # add left
+              rollout.append('(')
+              bt(l+1,r)
+              rollout.pop()
+              # add right
+              rollout.append(')')
+              bt(l,r+1)
+              rollout.pop()
+          bt()
+          return res
+  ```
+
   
