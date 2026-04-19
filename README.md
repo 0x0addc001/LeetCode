@@ -1989,4 +1989,109 @@
           return dp(m-1,n-1)
   ```
 
+
+## 20260419
+
+- [79. Word Search](https://leetcode.cn/problems/word-search/)
+
+  ```python
+  class Solution:
+      '''
+      def exist(self, board: List[List[str]], word: str) -> bool:
+          if not board or not word:
+              return False
+          n=len(board)
+          m=len(board[0])
+          visited=[[False]*m for _ in range(n)]
+          rollout=[]
+          def bt(idx,ix,iy):
+              if idx==len(word) and ''.join(rollout)==word:
+                  return True
+              if idx>=len(word):
+                  return False
+              for x,y in [(ix-1,iy),(ix+1,iy),(ix,iy+1),(ix,iy-1)]:
+                  if x<0 or x>=n or y<0 or y>=m:
+                      continue
+                  if board[x][y]==word[idx] and not visited[x][y]:
+                      visited[x][y]=True
+                      rollout.append(word[idx])
+                      if bt(idx+1,x,y):
+                          return True
+                      rollout.pop()
+                      visited[x][y]=False
+              return False
+          for i in range(n):
+              for j in range(m):
+                  if board[i][j]==word[0]:
+                      visited[i][j]=True
+                      rollout.append(word[0])
+                      if bt(1,i,j):
+                          return True
+                      rollout.pop()
+                      visited[i][j]=False
+          return False
+      '''
+  
+      # optimize
+      '''
+      def exist(self, board: List[List[str]], word: str) -> bool:
+          if not board or not word:
+              return False
+          n=len(board)
+          m=len(board[0])
+          visited=[[False]*m for _ in range(n)]
+          def bt(idx,i,j):
+              if idx==len(word):
+                  return True
+              for x,y in [(i-1,j),(i+1,j),(i,j+1),(i,j-1)]:
+                  if x<0 or x>=n or y<0 or y>=m:
+                      continue
+                  if board[x][y]==word[idx] and not visited[x][y]:
+                      visited[x][y]=True
+                      if bt(idx+1,x,y):
+                          return True
+                      visited[x][y]=False
+              return False
+          for i in range(n):
+              for j in range(m):
+                  if board[i][j]==word[0]:
+                      visited[i][j]=True
+                      if bt(1,i,j):
+                          return True
+                      visited[i][j]=False
+          return False
+      '''
+  
+      # optimize
+      def exist(self, board: List[List[str]], word: str) -> bool:
+          if not board or not word:
+              return False
+          n=len(board)
+          m=len(board[0])
+          visited=[[False]*m for _ in range(n)]
+          def bt(idx,i,j): # validator
+              if idx==len(word):
+                  return True
+              if i<0 or i>=n or j<0 or j>=m:
+                  return False
+              if board[i][j]!=word[idx]:
+                  return False
+              if visited[i][j]:
+                  return False
+              visited[i][j]=True
+              for x,y in [(i-1,j),(i+1,j),(i,j-1),(i,j+1)]:
+                  if bt(idx+1,x,y):
+                      return True
+              visited[i][j]=False
+              return False
+          for i in range(n):
+              for j in range(m):
+                  if bt(0,i,j):
+                      return True
+                  # if board[i][j]==word[0]:
+                  #     if bt(0,i,j):
+                  #         return True
+          return False
+  ```
+
   
