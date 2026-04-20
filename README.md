@@ -2094,4 +2094,45 @@
           return False
   ```
 
+
+## 20260420
+
+- [64. Minimum Path Sum](https://leetcode.cn/problems/minimum-path-sum/)
+
+  ```python
+  class Solution:
+      def minPathSum(self, grid: List[List[int]]) -> int:
+          '''
+          n=len(grid)
+          m=len(grid[0])
+          @cache
+          def dp(x,y):
+              if x==0 and y==0:
+                  return grid[0][0]
+              if x>(n-1) or x<0 or y>(m-1) or y<0:
+                  return float('inf')
+              min_sum=float('inf')
+              for pre_x,pre_y in [(x-1,y),(x,y-1)]:
+                  min_sum=min(min_sum,grid[x][y]+dp(pre_x,pre_y))
+              return min_sum
+          return dp(n-1,m-1)
+          '''
+          # optimize
+          n=len(grid)
+          m=len(grid[0])
+          @cache
+          def dp(x,y):
+              if x==0 and y==0:
+                  return grid[0][0]
+              # if x>(n-1) or x<0 or y>(m-1) or y<0:
+              if x<0 or y<0:
+                  return float('inf')
+              # min_sum=float('inf')
+              # for pre_x,pre_y in [(x-1,y),(x,y-1)]:
+              #     min_sum=min(min_sum,grid[x][y]+dp(pre_x,pre_y))
+              # return min_sum
+              return grid[x][y]+min(dp(x-1,y),dp(x,y-1))
+          return dp(n-1,m-1)
+  ```
+
   
