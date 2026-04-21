@@ -2135,4 +2135,41 @@
           return dp(n-1,m-1)
   ```
 
+
+## 20260421
+
+- [5. Longest Palindromic Substring](https://leetcode.cn/problems/longest-palindromic-substring/)
+
+  ```python
+  class Solution:
+      def longestPalindrome(self, s: str) -> str:
+          # bf
+          '''
+          n=len(s)
+          if n==1:
+              return s
+          res=''
+          for i in range(n):
+              for j in range(i,n):
+                  if j-i+1>len(res) and s[i:j+1]==s[i:j+1][::-1]:
+                      res=s[i:j+1]
+          return res
+          '''
+  
+          # core expand
+          def expand(l,r):
+              while l>=0 and r<len(s) and s[l]==s[r]:
+                  l-=1
+                  r+=1
+              # return s[l:r+1] broke
+              return s[l+1:r]
+  
+          res=''
+          for i in range(len(s)):
+              single=expand(i,i)
+              double=expand(i,i+1)
+              res=max(res,single,double,key=len) # key=len
+          return res
+  ```
+
   
