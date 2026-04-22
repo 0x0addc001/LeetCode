@@ -2172,4 +2172,81 @@
           return res
   ```
 
+
+## 20260421
+
+- [72. Edit Distance](https://leetcode.cn/problems/edit-distance/)
+
+  ```python
+  class Solution:
+      def minDistance(self, word1: str, word2: str) -> int:
+          '''
+          @cache
+          def dp(w1,w2):
+              if w1==w2:
+                  return 0
+              if not w1:
+                  return(len(w2))
+              if not w2:
+                  return(len(w1))
+              min_cnt=float('inf')
+              for i in range(len(w1)): # how to manipulate this single ori char
+                  for j in range(len(w2)): # the target char
+                      if w1[i]==w2[j]:
+                          # remain
+                          cnt_rem=dp(w1[:i],w2[:j])+dp(w1[i+1:],w2[j+1:])
+                          min_cnt=min(min_cnt,cnt_rem)
+                      else:
+                          # replace
+                          cnt_rep=1+dp(w1[:i],w2[:j])+dp(w1[i+1:],w2[j+1:])
+                          # del
+                          cnt_del_1=1+dp(w1[:i],w2[:j])+dp(w1[i+1:],w2[j:]) # i-1) j-1) (i+1 (j
+                          cnt_del_2=1+dp(w1[:i],w2[:j+1])+dp(w1[i+1:],w2[j+1:]) # i-1) j) (i+1 (j+1
+                          # add
+                          cnt_add_1=1+dp(w1[:i+1],w2[:j])+dp(w1[i+1:],w2[j:]) # i) j-1) (i+1 (j
+                          cnt_add_2=1+dp(w1[:i-2],w2[:j+1])+dp(w1[i:],w2[j+1:]) # i-1) j) (i (j+1
+                          min_cnt=min(min_cnt,cnt_rep,cnt_del_1,cnt_del_2,cnt_add_1,cnt_add_2)
+              return min_cnt
+          return dp(word1,word2)
+          '''
+          @cache
+          def dp(i,j): # up to
+              if i==len(word1) and j==len(word2):
+                  return 0
+              if i==len(word1):
+                  return len(word2)-j
+              if j==len(word2):
+                  return len(word1)-i
+  
+              if word1[i]==word2[j]:
+                  return dp(i+1,j+1)
+              else:
+                  min_cnt=float('inf')
+                  cnt_rep=1+dp(i+1,j+1)
+                  cnt_del=1+dp(i+1,j)
+                  cnt_add=1+dp(i,j+1)
+                  min_cnt=min(min_cnt,cnt_rep,cnt_del,cnt_add)
+              return min_cnt
+          return dp(0,0) # forward
+  ```
+
+- [53. Maximum Subarray](https://leetcode.cn/problems/maximum-subarray/)
+
+  ```python
+  class Solution:
+      def maxSubArray(self, nums: List[int]) -> int:
+          max_sum=float('-inf')
+          @cache
+          def dp(idx):
+              nonlocal max_sum
+              if idx==0:
+                  cur_sum=max_sum=nums[0]
+                  return cur_sum
+              cur_sum=max(nums[idx],nums[idx]+dp(idx-1))
+              max_sum=max(max_sum,cur_sum)
+              return cur_sum
+          dp(len(nums)-1)
+          return max_sum
+  ```
+
   
