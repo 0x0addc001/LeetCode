@@ -2249,4 +2249,61 @@
           return max_sum
   ```
 
+
+## 20260423
+
+- [283. Move Zeroes](https://leetcode.cn/problems/move-zeroes/)
+
+  ```python
+  class Solution:
+      def moveZeroes(self, nums: List[int]) -> None:
+          """
+          Do not return anything, modify nums in-place instead.
+          """
+          # bf
+          '''
+          target=[n for n in nums if n!=0]+[n for n in nums if n==0]
+          for i in range(len(nums)):
+              nums[i]=target[i]  
+          '''
+  
+          # swap
+          '''
+          if not nums or len(nums)==1:
+              return
+          non_0_idx=0
+          for i in range(len(nums)):
+              if nums[i]!=0:
+                  nums[i],nums[non_0_idx]=nums[non_0_idx],nums[i]
+                  non_0_idx+=1
+          '''
+  
+          # prefill
+          # filter 0
+          non_0_idx=0
+          for i in range(len(nums)):
+              if nums[i]!=0:
+                  nums[non_0_idx]=nums[i]
+                  non_0_idx+=1
+          # compensate 0
+          for i in range(non_0_idx,len(nums)):
+              nums[i]=0
+  ```
+
+
+## 20260424
+
+- [35. Search Insert Position](https://leetcode.cn/problems/search-insert-position/)
+
+  ```python
+  class Solution:
+      def searchInsert(self, nums: List[int], target: int) -> int:
+          # lib
+          # return bisect.bisect_left(nums,target)
+          
+          # manual
+          less=[x for x in nums if x < target]
+          return len(less)
+  ```
+
   
