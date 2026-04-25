@@ -2306,4 +2306,44 @@
           return len(less)
   ```
 
+
+## 20260425
+
+- [20. Valid Parentheses](https://leetcode.cn/problems/valid-parentheses/)
+
+  ```python
+  class Solution:
+      def isValid(self, s: str) -> bool:
+          '''
+          stk=[]
+          for i in range(len(s)):
+              if s[i]=='(' or s[i]=='[' or s[i]=='{':
+                  stk.append(s[i])
+              elif s[i]==')':
+                  if not stk or stk[-1]!='(':
+                      return False
+                  stk.pop()
+              elif s[i]==']':
+                  if not stk or stk[-1]!='[':
+                      return False
+                  stk.pop()
+              elif s[i]=='}':
+                  if not stk or stk[-1]!='{':
+                      return False
+                  stk.pop()
+          return not stk
+          '''
+          
+          # optimize
+          stk=[]
+          pairs={'(':')','[':']','{':'}'}
+          for c in s:
+              # if c in pairs.keys():
+              if c in pairs:
+                  stk.append(c)
+              elif not stk or c!=pairs[stk.pop()]:
+                  return False
+          return not stk
+  ```
+
   
