@@ -2346,4 +2346,43 @@
           return not stk
   ```
 
+
+## 20260428
+
+- [136. Single Number](https://leetcode.cn/problems/single-number/)
+
+  ```python
+  class Solution:
+      def singleNumber(self, nums: List[int]) -> int:
+          res=0
+          for num in nums:
+              res ^= num
+          return res
+  ```
+
+- [169. Majority Element](https://leetcode.cn/problems/majority-element/)
+
+  ```python
+  class Solution:
+      def majorityElement(self, nums: List[int]) -> int:
+          # Set
+          '''
+          return max(set(nums),key=nums.count)
+          '''
+      	# Counter
+          '''
+      	from collections import Counter
+      	return Counter(nums).most_common()[0][0] #[('apple', 3), ('banana', 2)]
+      	'''
+          # Voting
+          cnt=0
+          cand=None
+          for num in nums:
+              if cnt==0:
+                  cand=num
+              cnt+=(1 if cand==num else -1)
+          return cand
+      	
+  ```
+
   
