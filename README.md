@@ -2385,4 +2385,52 @@
       	
   ```
 
+
+## 20260429
+
+- [236. Lowest Common Ancestor of a Binary Tree](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
+
+  ```python
+  # Definition for a binary tree node.
+  # class TreeNode:
+  #     def __init__(self, x):
+  #         self.val = x
+  #         self.left = None
+  #         self.right = None
+  
+  class Solution:
+      def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+          # recur
+          '''
+          if not root:
+              return None # return nothing
+          if root==p or root==q:
+              return root # return the found one (directedly itself)
+          l=self.lowestCommonAncestor(root.left,p,q) # leftsearch p | q
+          r=self.lowestCommonAncestor(root.right,p,q) # rightsearch p | q
+          if l and r: # could find from both side
+              return root
+          return l if l else r # return the one found (indirectedly)
+          '''
+  
+          # iter bfs
+          que=deque([root])
+          parent={root:None}
+          while que:
+              n=que.popleft()
+              if n.left:
+                  parent[n.left]=n
+                  que.append(n.left)
+              if n.right:
+                  parent[n.right]=n
+                  que.append(n.right)
+          ancestors=set()
+          while p:
+              ancestors.add(p)
+              p=parent[p]
+          while q not in ancestors:
+              q=parent[q]
+          return q
+  ```
+
   
