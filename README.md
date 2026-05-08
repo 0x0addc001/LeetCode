@@ -2433,4 +2433,25 @@
           return q
   ```
 
+
+## 20260508
+
+- [49. Group Anagrams](https://leetcode.cn/problems/group-anagrams/)
+
+  ```python
+  class Solution:
+      def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+          # mapping
+          n=len(strs)
+          maps=defaultdict(list)
+          for i in range(n):
+              s=strs[i]
+              # maps[tuple(sorted(s))].append(s)
+              sid=[0]*26
+              for c in s:
+                  sid[ord(c)-ord('a')]+=1
+              maps[tuple(sid)].append(s)
+          return list(maps.values())
+  ```
+
   
