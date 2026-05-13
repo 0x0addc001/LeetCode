@@ -2454,4 +2454,40 @@
           return list(maps.values())
   ```
 
+
+## 20260513
+
+- [128. Longest Consecutive Sequence](https://leetcode.cn/problems/longest-consecutive-sequence/)
+
+  ```python
+  class Solution:
+      def longestConsecutive(self, nums: List[int]) -> int:
+          # bf
+          '''
+          maxseq=0
+          curseq=0
+          nums.sort()
+          for i in range(len(nums)):
+              if i==0 or nums[i]==nums[i-1]+1:
+                  curseq+=1
+              elif nums[i]==nums[i-1]:
+                  pass
+              else:
+                  curseq=1 # reset
+              maxseq=max(curseq,maxseq)
+          return maxseq
+          '''
+          # unifind o(n)
+          num_set=set(nums)
+          max_len=0
+          for num in num_set:
+              if num-1 not in num_set: # min of the seq
+                  cur_len=1
+                  while num+1 in num_set:
+                      num+=1
+                      cur_len+=1
+                  max_len=max(max_len,cur_len)
+          return max_len
+  ```
+
   
