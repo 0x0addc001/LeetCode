@@ -2490,4 +2490,65 @@
           return max_len
   ```
 
-  
+
+## 20260514
+
+- [11. Container With Most Water](https://leetcode.cn/problems/container-with-most-water/)
+
+  ```python
+  class Solution:
+      def maxArea(self, height: List[int]) -> int:
+          start,end=0,len(height)-1 # 最悲观方案
+          max_area=0
+          while start < end: # 边界收缩
+              area=min(height[end],height[start])*(end-start)
+              if area > max_area:
+                  max_area=area
+              if height[start]<height[end]: # 优化短板
+                  start+=1
+              else:
+                  end-=1
+          return max_area
+  ```
+
+- [42. Trapping Rain Water](https://leetcode.cn/problems/trapping-rain-water/)
+
+  ```python
+  class Solution:
+      def trap(self, height: List[int]) -> int:
+          # bf
+          '''
+          max_height=max(height)
+          max_width=len(height)
+          res=0
+          for h in range(max_height,0,-1):
+              cand=[]
+              for i in range(max_width):
+                  if height[i]>=h:
+                      cand.append(i)
+              if len(cand)>=2:
+                  for j in range(1,len(cand)):
+                      dist=cand[j]-cand[j-1]-1
+                      if dist>0:
+                          res+=dist
+          return res
+          '''
+          # calculus
+          s,e=0,len(height)-1
+          max_h_s=max_h_e=0
+          res=0
+          while s<e:
+              if height[s]<height[e]:
+                  if height[s]>max_h_s:
+                      max_h_s=height[s]
+                  else:
+                      res+=(max_h_s-height[s])
+                  s+=1
+              else:
+                  if height[e]>max_h_e:
+                      max_h_e=height[e]
+                  else:
+                      res+=(max_h_e-height[e])
+                  e-=1
+          return res
+  ```
