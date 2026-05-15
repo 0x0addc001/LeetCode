@@ -2552,3 +2552,35 @@
                   e-=1
           return res
   ```
+
+## 20260515
+
+- [54. Spiral Matrix](https://leetcode.cn/problems/spiral-matrix/)
+
+  ```python
+  class Solution:
+      def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+          if not matrix:
+              return matrix
+          # collect
+          res=[]
+          while matrix:
+              for i in matrix[0]:
+                  res.append(i)
+              # del
+              matrix=matrix[1:]
+              # left 90
+              if matrix:
+                  m=len(matrix)
+                  n=len(matrix[0])
+                  new_mat=[]
+                  for j in range(n-1,-1,-1):
+                      row=[]
+                      for i in range(m):
+                          row.append(matrix[i][j])
+                      new_mat.append(row)
+                  matrix=new_mat
+          return res
+  ```
+
+  
