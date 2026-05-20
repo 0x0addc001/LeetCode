@@ -2602,4 +2602,45 @@
           return res
   ```
 
+
+## 20260520
+
+- [189. Rotate Array](https://leetcode.cn/problems/rotate-array/)
+
+  ```python
+  class Solution:
+      def rotate(self, nums: List[int], k: int) -> None:
+          """
+          Do not return anything, modify nums in-place instead.
+          """
+          n=len(nums)
+          k=k%n
+          # temp=nums[n-k:]+nums[:n-k]
+          # for i in range(n):
+          #     nums[i]=temp[i]
+          nums[:]=nums[-k:]+nums[:-k] # [:] in-place replace
+  ```
+
+- [238. Product of Array Except Self](https://leetcode.cn/problems/product-of-array-except-self/)
+
+  ```python
+  class Solution:
+      def productExceptSelf(self, nums: List[int]) -> List[int]:
+          res=[]
+          n=len(nums)
+          mul_forward=[1]*n
+          mul_backward=[1]*n
+          for i in range(1,n):
+              mul_forward[i]=mul_forward[i-1]*nums[i-1]
+              mul_backward[-i-1]=mul_backward[-i]*nums[-i]
+          for i in range(n):
+              # mul=1
+              # for j in range(n):
+              #     if j!=i:
+              #         mul*=nums[j]
+              # res.append(mul)
+              res.append(mul_forward[i]*mul_backward[i])
+          return res
+  ```
+
   
