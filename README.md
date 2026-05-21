@@ -2643,4 +2643,60 @@
           return res
   ```
 
+
+## 20260521
+
+- [73. Set Matrix Zeroes](https://leetcode.cn/problems/set-matrix-zeroes/)
+
+  ```python
+  class Solution:
+      def setZeroes(self, matrix: List[List[int]]) -> None:
+          """
+          Do not return anything, modify matrix in-place instead.
+          """
+          rows=set()
+          cols=set()
+          for i in range(len(matrix)):
+              for j in range(len(matrix[0])):
+                  if matrix[i][j]==0:
+                      rows.add(i)
+                      cols.add(j)
+          for i in rows:
+              # for j in range(len(matrix[0])):
+              #     matrix[i][j]=0
+              matrix[i]=[0]*len(matrix[0])
+          for i in range(len(matrix)):
+              for j in cols:
+                  matrix[i][j]=0
+  ```
+
+- [48. Rotate Image](https://leetcode.cn/problems/rotate-image/)
+
+  ```python
+  class Solution:
+      def rotate(self, matrix: List[List[int]]) -> None:
+          """
+          Do not return anything, modify matrix in-place instead.
+          """
+          n=len(matrix)
+          '''
+          new_mat=[[0]*n for _ in range(n)]
+          for i in range(n):
+              for j in range(n):
+                  new_mat[i][j]=matrix[-j-1][i]
+          for i in range(n):
+              for j in range(n):
+                  matrix[i][j]=new_mat[i][j]
+          '''
+          # in-place replace
+          # transpose
+          for i in range(n):
+              for j in range(i+1,n): # above diag
+                  matrix[i][j],matrix[j][i]=matrix[j][i],matrix[i][j]
+          # mirror left-right
+          for i in range(n):
+              for j in range(n//2): # left of centre vertical line
+                  matrix[i][j],matrix[i][-j-1]=matrix[i][-j-1],matrix[i][j]
+  ```
+
   
