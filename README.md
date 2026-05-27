@@ -2699,4 +2699,80 @@
                   matrix[i][j],matrix[i][-j-1]=matrix[i][-j-1],matrix[i][j]
   ```
 
+
+## 20260527
+
+- [76. Minimum Window Substring](https://leetcode.cn/problems/minimum-window-substring/)
+
+  ```python
+  class Solution:
+      def minWindow(self, s: str, t: str) -> str:
+          # bf
+          '''
+          dict_t=defaultdict(int)
+          for c in t:
+              dict_t[c]+=1
+          pre=pos=0
+          dict_s=defaultdict(int)
+          def check():
+              nonlocal dict_s
+              nonlocal dict_t
+              for k in dict_t:
+                  if dict_s[k]<dict_t[k]:
+                      return False
+              return True
+          cand=[]
+          while pre<len(s):
+              if s[pre] in dict_t:
+                  dict_s[s[pre]]+=1
+                  if check():
+                      # depulicate
+                      while pos<=pre:
+                          if s[pos] in dict_t:
+                              if dict_s[s[pos]]>dict_t[s[pos]]:
+                                  dict_s[s[pos]]-=1
+                                  pos+=1
+                              else:
+                                  break
+                          else:
+                              dict_s[s[pos]]-=1
+                              pos+=1
+                      heapq.heappush(cand,(pre-pos+1,pos,pre))
+              pre+=1
+          if cand: 
+              _,l,r=heapq.heappop(cand)
+              return s[l:r+1]
+          else:
+              return ""
+          '''
+  
+          # optimize by maintaining suff & min
+          dict_t=defaultdict(int)
+          for c in t:
+              dict_t[c]+=1
+          pre=pos=0
+          dict_s=defaultdict(int)
+          min_len=inf
+          min_pos_pre=(0,-1)
+          suff=0
+          while pre<len(s):
+              if s[pre] in dict_t:
+                  dict_s[s[pre]]+=1
+                  if dict_s[s[pre]]==dict_t[s[pre]]:
+                      suff+=1
+                      # depulicate
+                      while pos<=pre and suff==len(dict_t):
+                          cur_len=pre-pos+1
+                          if cur_len<min_len:
+                              min_len=cur_len
+                              min_pos_pre=(pos,pre)
+                          if s[pos] in dict_t:
+                              dict_s[s[pos]]-=1
+                              if dict_s[s[pos]]<dict_t[s[pos]]:
+                                  suff-=1
+                          pos+=1
+              pre+=1
+          return s[min_pos_pre[0]:min_pos_pre[1]+1]
+  ```
+
   
