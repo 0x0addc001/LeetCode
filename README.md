@@ -2775,4 +2775,64 @@
           return s[min_pos_pre[0]:min_pos_pre[1]+1]
   ```
 
+
+## 20260528
+
+- [155. Min Stack](https://leetcode.cn/problems/min-stack/)
+
+  ```python
+  class MinStack:
+  
+      # hq
+      '''
+      def __init__(self):
+          self.stk=[]
+          self.hq=[]
+          # heapq.heapify(self.hq)
+  
+      def push(self, val: int) -> None:
+          self.stk.append(val)
+          heapq.heappush(self.hq,val)
+          
+      def pop(self) -> None:
+          el=self.stk[-1]
+          self.hq.remove(el)
+          heapq.heapify(self.hq) # re-adjust the tree
+          self.stk.pop()
+          
+      def top(self) -> int:
+          return self.stk[-1]
+  
+      def getMin(self) -> int:    
+          return self.hq[0]
+      '''
+  
+      # minstk 同步各层最小值
+      def __init__(self):
+          self.stk=[]
+          self.minstk=[]
+  
+      def push(self, val: int) -> None:
+          self.stk.append(val)
+          if not self.minstk or val<=self.minstk[-1]: # <= !!!
+              self.minstk.append(val)
+          
+      def pop(self) -> None:
+          if self.stk.pop()==self.minstk[-1]:
+              self.minstk.pop()
+          
+      def top(self) -> int:
+          return self.stk[-1]
+  
+      def getMin(self) -> int:    
+          return self.minstk[-1]
+  
+  # Your MinStack object will be instantiated and called as such:
+  # obj = MinStack()
+  # obj.push(val)
+  # obj.pop()
+  # param_3 = obj.top()
+  # param_4 = obj.getMin()
+  ```
+
   
