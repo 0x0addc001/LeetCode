@@ -2835,4 +2835,43 @@
   # param_4 = obj.getMin()
   ```
 
+
+## 20260610
+
+- [215. Kth Largest Element in an Array](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
+
+  ```python
+  class Solution:
+      def findKthLargest(self, nums: List[int], k: int) -> int:
+          return heapq.nlargest(k,nums)[k-1]
+  ```
+
+- [295. Find Median from Data Stream](https://leetcode.cn/problems/find-median-from-data-stream/)
+
+  ```python
+  class MedianFinder:
+  
+      def __init__(self):
+          self.xgd=[] # the greater half
+          self.dgd=[] # the smaller half
+  
+      def addNum(self, num: int) -> None:
+          heapq.heappush(self.dgd,-num)
+          heapq.heappush(self.xgd,-heapq.heappop(self.dgd))
+          if len(self.xgd)>len(self.dgd):
+              # return back, ensuring dgd's size is larger
+              heapq.heappush(self.dgd,-heapq.heappop(self.xgd))
+  
+      def findMedian(self) -> float:
+          if len(self.dgd)>len(self.xgd):
+              return -self.dgd[0]
+          else:
+              return (-self.dgd[0]+self.xgd[0])/2
+  
+  # Your MedianFinder object will be instantiated and called as such:
+  # obj = MedianFinder()
+  # obj.addNum(num)
+  # param_2 = obj.findMedian()
+  ```
+
   
