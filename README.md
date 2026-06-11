@@ -2874,4 +2874,172 @@
   # param_2 = obj.findMedian()
   ```
 
+
+## 20260611
+
+- [124. Binary Tree Maximum Path Sum](https://leetcode.cn/problems/binary-tree-maximum-path-sum/)
+
+  ```python
+  # Definition for a binary tree node.
+  # class TreeNode:
+  #     def __init__(self, val=0, left=None, right=None):
+  #         self.val = val
+  #         self.left = left
+  #         self.right = right
+  class Solution:
+      def maxPathSum(self, root: Optional[TreeNode]) -> int:
+          # kadane
+          res=-inf
+          def dfs(node):
+              if not node:
+                  return 0
+              left=dfs(node.left)
+              right=dfs(node.right)
+              cur_max=node.val+max(0,left,right,left+right)
+              # print(cur_max)
+              nonlocal res
+              res=max(res,cur_max)
+              return node.val+max(0,left,right)
+          part_max=dfs(root)
+          res=max(res,part_max)
+          return res
+  
+  #------------------------------------------------------#
+  # standard
+  class Solution:
+      def maxPathSum(self, root: Optional[TreeNode]) -> int:
+          res = -inf
+  
+          def dfs(node):
+              nonlocal res
+              if not node:
+                  return 0
+              
+              # Kadane 思想：如果子树路径和是负数，我们直接放弃它（取 0）
+              left_gain = max(dfs(node.left), 0)
+              right_gain = max(dfs(node.right), 0)
+              
+              # 当前节点作为“最高拐点”（分叉点）时的最大路径和
+              current_path_sum = node.val + left_gain + right_gain
+              
+              # 更新全局最大值
+              res = max(res, current_path_sum)
+              
+              # 返回给父节点：当前节点能提供的最大“单侧”路径和
+              return node.val + max(left_gain, right_gain)
+  
+          dfs(root)
+          return res
+  ```
+
+- [146. LRU Cache](https://leetcode.cn/problems/lru-cache/)
+
+  ```python
+  class LRUCache:
+  
+      def __init__(self, capacity: int):
+          self.capacity=capacity
+          self.cnt=0
+          self.kvcache=OrderedDict()
+  
+      def get(self, key: int) -> int:
+          if key in self.kvcache:
+              value=self.kvcache[key]
+              self.kvcache.move_to_end(key)
+              return value
+          else:
+              return -1
+          
+      def put(self, key: int, value: int) -> None:
+          if key in self.kvcache:
+              self.kvcache[key]=value
+              self.kvcache.move_to_end(key)
+          else:
+              if self.cnt>=self.capacity:
+                  # evict
+                  self.kvcache.popitem(last=False)
+                  self.cnt-=1
+              # add
+              self.kvcache[key]=value
+              self.cnt+=1
+  
+  #-----------------------------------------------#
+  # standard
+   class _Node:
+      """双向链表节点"""
+      __slots__ = ('key', 'value', 'prev', 'next')
+      def __init__(self, key=None, value=None):
+          self.key = key
+          self.value = value
+          self.prev = None
+          self.next = None
+  
+  class LRUCache:
+      def __init__(self, capacity: int):
+          if capacity <= 0:
+              raise ValueError("capacity must be positive")
+          self.capacity = capacity
+          self.cache = {}            # key -> node
+          # 哨兵节点，简化边界处理
+          self.head = _Node()        # 虚拟头节点
+          self.tail = _Node()        # 虚拟尾节点
+          self.head.next = self.tail
+          self.tail.prev = self.head
+  
+      def _remove_node(self, node: _Node) -> None: # del
+          """从链表中移除一个节点（不删除缓存映射）"""
+          prev_node = node.prev
+          next_node = node.next
+          prev_node.next = next_node
+          next_node.prev = prev_node
+  
+      def _add_to_head(self, node: _Node) -> None: # add_h
+          """将节点插入到头部（head 之后）"""
+          node.prev = self.head
+          node.next = self.head.next
+          self.head.next.prev = node
+          self.head.next = node
+  
+      def _move_to_head(self, node: _Node) -> None: # mv_h
+          """将节点移动到头部（先移除再添加）"""
+          self._remove_node(node)
+          self._add_to_head(node)
+  
+      def _pop_tail(self) -> _Node: # pop_t
+          """弹出尾部节点（即最后一个实际节点）"""
+          node = self.tail.prev
+          self._remove_node(node)
+          return node
+  
+      def get(self, key: int) -> int:
+          if key not in self.cache:
+              return -1
+          node = self.cache[key]
+          # 访问后移到头部
+          self._move_to_head(node)
+          return node.value
+  
+      def put(self, key: int, value: int) -> None:
+          if key in self.cache:
+              # 更新已有节点的值并移到头部
+              node = self.cache[key]
+              node.value = value
+              self._move_to_head(node)
+          else:
+              # 新节点
+              if len(self.cache) >= self.capacity:
+                  # 淘汰最久未使用的节点（尾部）
+                  tail_node = self._pop_tail()
+                  del self.cache[tail_node.key]
+              # 创建新节点并插入头部
+              new_node = _Node(key, value)
+              self.cache[key] = new_node
+              self._add_to_head(new_node)
+  
+  # Your LRUCache object will be instantiated and called as such:
+  # obj = LRUCache(capacity)
+  # param_1 = obj.get(key)
+  # obj.put(key,value)
+  ```
+
   
