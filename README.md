@@ -3042,4 +3042,79 @@
   # obj.put(key,value)
   ```
 
+
+## 20260612
+
+- [74. Search a 2D Matrix](https://leetcode.cn/problems/search-a-2d-matrix/)
+
+  ```
+  class Solution:
+      def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+          # 1 1 2
+          # 3 3 5
+          m=len(matrix)
+          n=len(matrix[0])
+          x=0
+          y=n-1
+          while x<m and y>=0:
+              if matrix[x][y]==target:
+                  return True
+              elif matrix[x][y]>target:
+                  y-=1
+              else:
+                  x+=1
+          return False
+  ```
+
+- [34. Find First and Last Position of Element in Sorted Array](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/)
+
+  ```python
+  class Solution:
+      def searchRange(self, nums: List[int], target: int) -> List[int]:
+          # expand bound
+          '''
+          l=0
+          r=len(nums)-1
+          m=-1
+          while l<=r:
+              piv=l+(r-l)//2
+              if nums[piv]==target:
+                  m=piv
+                  break
+              elif nums[piv]>target:
+                  r=piv-1
+              else:
+                  l=piv+1
+          if m==-1:
+              return [-1,-1]
+          left=right=m
+          while left-1>=0 and nums[left-1]==target:
+              left-=1
+          while right+1<=len(nums)-1 and nums[right+1]==target:
+              right+=1
+          return [left,right]
+          '''
+          # two pass
+          def bsearch(leftest: bool) -> int:
+              l=0
+              r=len(nums)-1
+              bound=-1
+              while l<=r:
+                  m=l+(r-l)//2
+                  if nums[m]==target:
+                      bound=m
+                      if leftest:
+                          r=m-1
+                      else:
+                          l=m+1
+                  elif nums[m]>target:
+                      r=m-1
+                  else:
+                      l=m+1
+              return bound
+          left=bsearch(leftest=True)
+          right=bsearch(leftest=False)
+          return [left,right]
+  ```
+
   
