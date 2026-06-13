@@ -3117,4 +3117,63 @@
           return [left,right]
   ```
 
+
+## 20260613
+
+- [98. Validate Binary Search Tree](https://leetcode.cn/problems/validate-binary-search-tree/)
+
+  ```python
+  # Definition for a binary tree node.
+  # class TreeNode:
+  #     def __init__(self, val=0, left=None, right=None):
+  #         self.val = val
+  #         self.left = left
+  #         self.right = right
+  class Solution:
+      def isValidBST(self, root: Optional[TreeNode]) -> bool:
+          arr=[]
+          def inorder(node: TreeNode) -> None:
+              if not node:
+                  return
+              inorder(node.left)
+              # nonlocal arr
+              arr.append(node.val)
+              inorder(node.right)
+          inorder(root)
+          if len(arr)<=1:
+              return True
+          # for i in range(len(arr)-1):
+          #     if arr[i]>=arr[i+1]:
+          #         return False
+          # return True
+          return all(arr[i]<arr[i+1] for i in range(len(arr)-1))
+  ```
+
+- [230. Kth Smallest Element in a BST](https://leetcode.cn/problems/kth-smallest-element-in-a-bst/)
+
+  ```python
+  # Definition for a binary tree node.
+  # class TreeNode:
+  #     def __init__(self, val=0, left=None, right=None):
+  #         self.val = val
+  #         self.left = left
+  #         self.right = right
+  class Solution:
+      def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+          ctr=0
+          res=-1
+          def inorder(node: TreeNode) -> bool: # 表示找到没找到 提前终止以剪枝
+              nonlocal ctr,res
+              if not node:
+                  return False
+              if inorder(node.left):
+                  return True
+              ctr+=1
+              if ctr==k:
+                  res=node.val
+                  return True
+              return inorder(node.right)
+          inorder(root)
+  ```
+
   
