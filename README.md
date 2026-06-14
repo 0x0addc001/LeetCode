@@ -3176,4 +3176,82 @@
           inorder(root)
   ```
 
+
+## 20260614
+
+- [199. Binary Tree Right Side View](https://leetcode.cn/problems/binary-tree-right-side-view/)
+
+  ```python
+  # Definition for a binary tree node.
+  # class TreeNode:
+  #     def __init__(self, val=0, left=None, right=None):
+  #         self.val = val
+  #         self.left = left
+  #         self.right = right
+  class Solution:
+      def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+          if not root:
+              return []
+          q=deque([root])
+          res=[]
+          while q:
+              levlen=len(q)
+              for i in range(levlen):
+                  node=q.popleft()
+                  if i==levlen-1:
+                      res.append(node.val)
+                  if node.left:
+                      q.append(node.left)
+                  if node.right:
+                      q.append(node.right)
+          return res
+  ```
+
+- [114. Flatten Binary Tree to Linked List](https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/)
+
+  ```python
+  # Definition for a binary tree node.
+  # class TreeNode:
+  #     def __init__(self, val=0, left=None, right=None):
+  #         self.val = val
+  #         self.left = left
+  #         self.right = right
+  class Solution:
+      def flatten(self, root: Optional[TreeNode]) -> None:
+          """
+          Do not return anything, modify root in-place instead.
+          """
+  
+          def flat(node: Optional[TreeNode]) -> Optional[TreeNode]:
+              if not node:
+                  return None
+              if not node.left and not node.right:
+                  return node
+              '''
+              left=flat(node.left)
+              right=flat(node.right)
+              if left:
+                  left_last=left
+                  while left_last.right:
+                      left_last=left_last.right
+                  left_last.right=right
+                  node.left=None
+                  node.right=left
+              else:
+                  node.left=None
+                  node.right=right
+  
+              return node
+              '''
+              left_last=flat(node.left)
+              right_last=flat(node.right)
+              if left_last:
+                  left_last.right=node.right
+                  node.right=node.left
+                  node.left=None
+              return right_last if right_last else left_last
+          
+          flat(root)
+  ```
+
   
