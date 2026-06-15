@@ -3254,4 +3254,167 @@
           flat(root)
   ```
 
+
+## 20260615
+
+- [105. Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+
+  ```python
+  # Definition for a binary tree node.
+  # class TreeNode:
+  #     def __init__(self, val=0, left=None, right=None):
+  #         self.val = val
+  #         self.left = left
+  #         self.right = right
+  class Solution:
+      def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+          if not preorder or not inorder or len(preorder)!=len(inorder):
+              return None
+          if len(preorder)==1:
+              return TreeNode(val=preorder[0])
+          root_val=preorder[0]
+          root_idx_in=inorder.index(root_val)
+          left_in=inorder[:root_idx_in]
+          right_in=inorder[root_idx_in+1:]
+          # left_pre=[v for v in preorder if v in left_in]
+          # right_pre=[v for v in preorder if v in right_in]
+          left_num=len(left_in)
+          left_pre=preorder[1:1+left_num]
+          right_pre=preorder[1+left_num:]
+          left_node=self.buildTree(preorder=left_pre,inorder=left_in)
+          right_node=self.buildTree(preorder=right_pre,inorder=right_in)
+          root_node=TreeNode(val=root_val,left=left_node,right=right_node)
+          return root_node
+  ```
+
+- [33. Search in Rotated Sorted Array](https://leetcode.cn/problems/search-in-rotated-sorted-array/)
+
+  ```python
+  class Solution:
+      def search(self, nums: List[int], target: int) -> int:
+  
+          # bf
+          '''
+          # 确定旋转点
+          n=len(nums)
+          smallest_idx=0
+          for i in range(n-1):
+              if nums[i]>nums[i+1]:
+                  smallest_idx=i+1
+                  break
+          
+          # 确定区间
+          if nums[smallest_idx]<=target and nums[-1]>=target:
+              l=smallest_idx
+              r=n-1
+          elif nums[0]<=target and nums[smallest_idx-1]>=target:
+              l=0
+              r=(smallest_idx-1+n)%n
+          else:
+              return -1
+  
+          # 二分查找
+          while l<=r:
+              m=l+(r-l)//2
+              if target==nums[m]:
+                  return m
+              elif target<nums[m]:
+                  r=m-1
+              else:   
+                  l=m+1
+          return -1
+          '''
+  
+          # 有序区间+元素二分查找
+          l=0
+          r=len(nums)-1
+          while l<=r:
+              m=l+(r-l)//2
+              if target==nums[m]:
+                  return m
+              # 左有序
+              elif nums[l]<=nums[m]: # 可能 l==m
+                  # 又在左区间
+                  if nums[l]<=target<nums[m]:
+                      # 太好了 在左半段查找
+                      r=m-1
+                  else:
+                      l=m+1
+              # 右有序
+              else:
+                  # 又在右区间
+                  if nums[m]<target<=nums[r]:
+                      # 太好了 在右半段查找
+                      l=m+1
+                  else:
+                      r=m-1
+          return -1
+  ```
+
+- [153. Find Minimum in Rotated Sorted Array](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/)
+
+  ```python
+  class Solution:
+      def findMin(self, nums: List[int]) -> int:
+          # return min(nums)
+          # bf
+          '''
+          for i in range(len(nums)-1):
+              if nums[i]>nums[i+1]:
+                  return nums[i+1]
+          return nums[0]
+          '''
+          l=0
+          r=len(nums)-1
+          minv=inf
+          while l<=r:
+              m=l+(r-l)//2
+              # 左有序
+              if nums[l]<=nums[m]:
+                  minv=min(minv,nums[l])
+                  l=m+1
+              # 右有序
+              else:
+                  minv=min(minv,nums[m])
+                  r=m-1
+          return minv
+  # standard
+  class Solution:
+      def findMin(self, nums: List[int]) -> int:
+          l, r = 0, len(nums) - 1
+          while l < r:  # 注意这里是 l < r
+              m = l + (r - l) // 2
+              if nums[m] > nums[r]:
+                  l = m + 1  # 最小值在右边
+              else:
+                  r = m      # m 有可能是最小值，所以不能 m-1
+          return nums[l]
+  ```
+
+- [4. Median of Two Sorted Arrays](https://leetcode.cn/problems/median-of-two-sorted-arrays/)
+
+  ```python
+  class Solution:
+      def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+          merged=[]
+          p1=p2=0
+          while p1<len(nums1) and p2<len(nums2):
+              if nums1[p1]<nums2[p2]:
+                  merged.append(nums1[p1])
+                  p1+=1
+              else:
+                  merged.append(nums2[p2])
+                  p2+=1
+          if p1>=len(nums1):
+              merged.extend(nums2[p2:]) 
+          else:
+              merged.extend(nums1[p1:])
+          
+          n=len(merged)
+          if n%2==1:
+              return merged[n//2]
+          else:
+              return (merged[n//2]+merged[n//2-1])/2
+  ```
+
   
