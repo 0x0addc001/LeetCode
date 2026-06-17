@@ -2993,7 +2993,7 @@
           prev_node.next = next_node
           next_node.prev = prev_node
   
-      def _add_to_head(self, node: _Node) -> None: # add_h
+      def _add_to_head(self, node: _Node) -> None: # add
           """将节点插入到头部（head 之后）"""
           node.prev = self.head
           node.next = self.head.next
@@ -3415,6 +3415,71 @@
               return merged[n//2]
           else:
               return (merged[n//2]+merged[n//2-1])/2
+  ```
+
+
+## 20260617
+
+- [146. LRU Cache](https://leetcode.cn/problems/lru-cache/)
+
+  ```python
+  class _Node:
+      def __init__(self,key=None,value=None,prev=None,next=None):
+          self.key=key
+          self.value=value
+          self.prev=prev
+          self.next=next
+  class LRUCache:
+  
+      def __init__(self, capacity: int):
+          if capacity<=0:
+              raise ValueError("cap<=0")
+          self.capacity=capacity
+          self.cnt=0
+          self.head=_Node()
+          self.tail=_Node()
+          self.head.next=self.tail
+          self.tail.prev=self.head
+          self._map={}
+  
+      def remove(self,node:_Node):
+          node.prev.next=node.next
+          node.next.prev=node.prev
+  
+      def add(self,node:_Node):
+          node.next=self.head.next
+          node.prev=self.head
+          self.head.next.prev=node
+          self.head.next=node
+  
+      def move_to_head(self,node:_Node):
+          self.remove(node)
+          self.add(node)
+  
+      def get(self, key: int) -> int:
+          if key not in self._map:
+              return -1
+          node=self._map[key]
+          self.move_to_head(node)
+          return node.value
+  
+      def put(self, key: int, value: int) -> None:
+          if key in self._map:
+              node=self._map[key]
+              node.value=value
+              self.move_to_head(node)
+          else:
+              if len(self._map)>=self.capacity:
+                  del self._map[self.tail.prev.key]
+                  self.remove(self.tail.prev)
+              node=_Node(key=key,value=value)
+              self._map[key]=node
+              self.add(node)
+  
+  # Your LRUCache object will be instantiated and called as such:
+  # obj = LRUCache(capacity)
+  # param_1 = obj.get(key)
+  # obj.put(key,value)
   ```
 
   
