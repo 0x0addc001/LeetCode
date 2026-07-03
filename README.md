@@ -3482,4 +3482,126 @@
   # obj.put(key,value)
   ```
 
+
+## 20260703
+
+- [1143. 最长公共子序列](https://leetcode.cn/problems/longest-common-subsequence/)
+
+  ```python
+  class Solution:
+      def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+          # 非连续 
+          m=len(text1)
+          n=len(text2)
+          # dp=[[0]*(n+1) for _ in range(m+1)]
+          dp_pre=[0]*(n+1)
+          for i in range(1,m+1):
+              dp_cur=[0]*(n+1)
+              for j in range(1,n+1):
+                  if text1[i-1]==text2[j-1]:
+                      # dp[i][j]=dp[i][j-1]+1
+                      dp_cur[j]=dp_pre[j-1]+1
+                  else:
+                      # dp[i][j]=max(dp[i-1][j],dp[i][j-1])
+                      dp_cur[j]=max(dp_pre[j],dp_cur[j-1])
+              dp_pre=dp_cur
+          # return dp[m][n]
+          return dp_pre[n]
+  ```
+
+- [743. 网络延迟时间](https://leetcode.cn/problems/network-delay-time/)
+
+  ```python
+  import heapq
+  from math import inf
+  from typing import List
+  class Solution:
+      def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+          dists=[inf]*(n+1)
+  
+          dists[k]=0
+          hp=[(0,k)]
+  
+          while hp:
+              dist,node=heapq.heappop(hp)
+              if dist > dists[node]:
+                  continue
+              for e in times:
+                  if e[0]==node:
+                      u,v,w=e
+                      dist_new=dist+w
+                      if dist_new<dists[v]:
+                          dists[v]=dist_new
+                          heapq.heappush(hp,(dist_new,v))
+          res=max(dists[1:])
+          if res==inf:
+              return -1
+          return res
+  ```
+
+  ```python
+  import heapq
+  from math import inf
+  from typing import List
+  class Solution:
+      def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+          dists=[inf]*(n+1)
+  
+          dists[k]=0
+  
+          # dijkstra O((V+E) logV)
+          '''
+          hp=[(0,k)]
+  
+          while hp:
+              dist,node=heapq.heappop(hp)
+              if dist > dists[node]:
+                  continue
+              for e in times:
+                  if e[0]==node:
+                      u,v,w=e
+                      dist_new=dist+w
+                      if dist_new<dists[v]:
+                          dists[v]=dist_new
+                          heapq.heappush(hp,(dist_new,v))
+          res=max(dists[1:])
+          if res==inf:
+              return -1
+          return res
+          '''
+  
+          # bellman-ford O(VE)
+          for i in range(n-1):
+              updated=False
+              for u,v,w in times:
+                  if dists[u]!=inf and dists[u]+w<dists[v]:
+                      dists[v]=dists[u]+w
+                      updated=True
+              if not updated:
+                  break
+          res=max(dists[1:])
+          if res==inf:
+              return -1
+          return res
+  ```
+
+- [787. K 站中转内最便宜的航班](https://leetcode.cn/problems/cheapest-flights-within-k-stops/)
+
+  ```python
+  class Solution:
+      def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
+          dists=[inf]*n
+          dists[src]=0
+          for _ in range(k+1): # 最多 k+1 跳
+              updated=False
+              prev=dists[:] # 拷贝上一轮结果
+              for u,v,w in flights:
+                  if prev[u]!=inf and prev[u]+w<dists[v]: # 使用上一轮中间节点距离值，避免朝超次优化
+                      dists[v]=prev[u]+w
+                      updated=True
+              if not updated:
+                  break
+          return dists[dst] if dists[dst]!=inf else -1
+  ```
+
   
