@@ -3604,4 +3604,51 @@
           return dists[dst] if dists[dst]!=inf else -1
   ```
 
+
+## 20260708
+
+- [1044. 最长重复子串](https://leetcode.cn/problems/longest-duplicate-substring/)
+
+  ```python
+  class Solution:
+      def longestDupSubstring(self, s: str) -> str:
+          size=0
+          start=-1
+          for l in range(len(s)):
+              while s[l:l+size] in s[l+1:]:
+                  start=l
+                  size+=1
+          return s[start:start+size-1]
+  ```
+
+- [152. 乘积最大子数组](https://leetcode.cn/problems/maximum-product-subarray/)
+
+  ```python
+  class Solution:
+      def maxProduct(self, nums: List[int]) -> int:
+          n=len(nums)
+  
+          # maxres=-inf
+          # for i in range(n):
+          #     curres=1
+          #     for j in range(i,n):
+          #         curres*=nums[j]
+          #         maxres=max(curres,maxres)
+          # return maxres
+  
+          # T(n) S(1)
+          if not nums:
+              return -1
+          res=nums[0]
+          prefix_max=nums[0]
+          prefix_min=nums[0] # to handle flipping cases
+          for n in nums[1:]:
+              old_prefix_max=prefix_max
+              old_prefix_min=prefix_min
+              prefix_max=max(n,old_prefix_max*n,old_prefix_min*n)
+              prefix_min=min(n,old_prefix_min*n,old_prefix_max*n)
+              res=max(res,prefix_max)
+          return res
+  ```
+
   
